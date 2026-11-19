@@ -1,0 +1,2430 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Netflix India – Watch TV Shows Online, Watch Movies Online</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter, Bebas Neue & Anton for authentic Netflix typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'sans-serif'],
+            display: ['Bebas Neue', 'Anton', 'sans-serif'],
+          },
+          colors: {
+            netflix: {
+              red: '#E50914',
+              redHover: '#C11119',
+              black: '#141414',
+              dark: '#181818',
+              card: '#2F2F2F',
+              gray: '#808080',
+              lightGray: '#E5E5E5',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Base Netflix Aesthetics */
+    body {
+      background-color: #141414;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* Hide Scrollbars cleanly on carousels */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Custom Dark Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #141414;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #333333;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555555;
+    }
+
+    /* Authentic Netflix Top Gradient */
+    .netflix-nav-top {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.78) 10%, rgba(0, 0, 0, 0));
+    }
+
+    /* Billboard Dual Vignettes */
+    .billboard-vignette-left {
+      background: linear-gradient(77deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0) 85%);
+    }
+    .billboard-vignette-bottom {
+      background-image: linear-gradient(
+        180deg,
+        hsla(0, 0%, 8%, 0) 0,
+        hsla(0, 0%, 8%, 0.15) 15%,
+        hsla(0, 0%, 8%, 0.35) 29%,
+        hsla(0, 0%, 8%, 0.58) 44%,
+        #141414 68%,
+        #141414
+      );
+    }
+
+    /* Netflix "Ta-Dum" Red Ribbon Intro Animation */
+    @keyframes netflixRibbonZoom {
+      0% {
+        transform: scale(0.82);
+        opacity: 0;
+        filter: drop-shadow(0 0 0px rgba(229, 9, 20, 0));
+      }
+      25% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 28px rgba(229, 9, 20, 0.85));
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.12);
+        filter: drop-shadow(0 0 45px rgba(229, 9, 20, 0.95));
+      }
+      100% {
+        opacity: 0;
+        transform: scale(4.2);
+        filter: blur(8px);
+      }
+    }
+
+    @keyframes ribbonBeamSweep {
+      0% { transform: scaleY(0); opacity: 0; }
+      40% { transform: scaleY(1); opacity: 0.9; }
+      100% { transform: scaleY(1.4); opacity: 0; }
+    }
+
+    .animate-netflix-intro {
+      animation: netflixRibbonZoom 2.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .ribbon-beam {
+      animation: ribbonBeamSweep 2.1s ease-out forwards;
+    }
+
+    /* Ambient Billboard Ken Burns Motion */
+    @keyframes ambientKenBurns {
+      0% { transform: scale(1.02) translate(0, 0); }
+      50% { transform: scale(1.09) translate(-1%, -0.5%); }
+      100% { transform: scale(1.02) translate(0, 0); }
+    }
+    .billboard-ambient {
+      animation: ambientKenBurns 24s ease-in-out infinite;
+    }
+
+    /* Simulated Video Theater Motion */
+    @keyframes theaterScenePan {
+      0% { transform: scale(1.04) translateX(-1.5%); }
+      50% { transform: scale(1.12) translateX(1.5%); }
+      100% { transform: scale(1.04) translateX(-1.5%); }
+    }
+    .theater-motion {
+      animation: theaterScenePan 14s ease-in-out infinite;
+    }
+
+    /* Hover Preview Floating Card Animation */
+    @keyframes miniModalPop {
+      from {
+        opacity: 0;
+        transform: scale(0.92) translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .mini-modal-enter {
+      animation: miniModalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Modal Entrance */
+    @keyframes modalScaleIn {
+      from { opacity: 0; transform: scale(0.94) translateY(16px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-enter {
+      animation: modalScaleIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Card Thumbnail Base Hover */
+    .thumb-tile {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .thumb-tile:hover {
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.85);
+    }
+  </style>
+</head>
+<body class="bg-[#141414] text-white font-sans antialiased selection:bg-[#E50914] selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- 0. NETFLIX "TA-DUM" CINEMATIC RED RIBBON INTRO OVERLAY                -->
+  <!-- ===================================================================== -->
+  <div id="netflix-intro-overlay" class="fixed inset-0 z-[100] hidden bg-black flex-col items-center justify-center overflow-hidden select-none">
+    <!-- Subtle Vertical Red Light Beams -->
+    <div class="absolute inset-0 flex justify-center gap-3 opacity-40 pointer-events-none">
+      <div class="w-1.5 h-full bg-gradient-to-b from-transparent via-[#E50914] to-transparent ribbon-beam"></div>
+      <div class="w-3 h-full bg-gradient-to-b from-transparent via-[#B20710] to-transparent ribbon-beam" style="animation-delay: 0.1s"></div>
+      <div class="w-1 h-full bg-gradient-to-b from-transparent via-[#ff3b3b] to-transparent ribbon-beam" style="animation-delay: 0.2s"></div>
+      <div class="w-4 h-full bg-gradient-to-b from-transparent via-[#E50914] to-transparent ribbon-beam" style="animation-delay: 0.15s"></div>
+    </div>
+
+    <!-- Iconic Netflix Ribbon 'N' Emblem -->
+    <div id="intro-emblem" class="relative z-10 flex flex-col items-center">
+      <svg class="w-28 h-44 sm:w-36 sm:h-56" viewBox="0 0 111 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ribbonLeft" x1="0" y1="0" x2="0" y2="190" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#B1060F"/>
+            <stop offset="100%" stop-color="#E50914"/>
+          </linearGradient>
+          <linearGradient id="ribbonRight" x1="0" y1="0" x2="0" y2="190" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#E50914"/>
+            <stop offset="100%" stop-color="#99050D"/>
+          </linearGradient>
+          <linearGradient id="ribbonDiag" x1="0" y1="0" x2="111" y2="190" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#FF1E27"/>
+            <stop offset="50%" stop-color="#E50914"/>
+            <stop offset="100%" stop-color="#B1060F"/>
+          </linearGradient>
+        </defs>
+        <!-- Left Vertical Bar -->
+        <path d="M0 0H36V190C24 187.5 12 186.5 0 187V0Z" fill="url(#ribbonLeft)"/>
+        <!-- Right Vertical Bar -->
+        <path d="M75 0H111V187C99 186.5 87 187.5 75 190V0Z" fill="url(#ribbonRight)"/>
+        <!-- Center Diagonal Ribbon with realistic shadow -->
+        <path d="M0 0H36L111 187C98.5 186.5 86.5 187.5 75 190L0 0Z" fill="url(#ribbonDiag)"/>
+      </svg>
+    </div>
+
+    <button onclick="skipIntroAnimation()" class="absolute bottom-8 right-8 z-20 px-4 py-1.5 text-xs uppercase tracking-widest text-gray-400 hover:text-white border border-white/25 hover:border-white rounded bg-black/60 transition">
+      Skip Intro
+    </button>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 1. "WHO'S WATCHING?" AUTHENTIC NETFLIX PROFILE GATE                   -->
+  <!-- ===================================================================== -->
+  <div id="profile-gate" class="fixed inset-0 z-[90] bg-[#141414] flex flex-col justify-between p-6 sm:p-10 transition-opacity duration-300 overflow-y-auto">
+    <!-- Top Left Authentic Netflix Wordmark -->
+    <div class="max-w-[1700px] w-full mx-auto flex items-center justify-between">
+      <div class="w-24 sm:w-32 text-[#E50914]">
+        <svg viewBox="0 0 1024 276.742" fill="currentColor" class="w-full h-auto">
+          <path d="M140.803 258.904c-15.404 2.705-31.079 3.516-47.294 5.676l-49.458-144.856v151.073c-15.404 1.621-29.457 3.783-44.051 5.945v-276.742h41.08l56.212 157.021v-157.021h43.511v258.904zm85.131-157.558c16.757 0 42.431-.811 57.835-.811v43.24c-19.189 0-41.619 0-57.835.811v64.322c25.405-1.621 50.809-3.785 76.482-4.596v41.617l-119.724 9.461v-255.39h119.724v43.241h-76.482v58.105zm237.284-58.104h-44.862v198.908c-14.594 0-29.188 0-43.239.539v-199.447h-44.862v-43.242h132.965l-.002 43.242zm70.266 55.132h59.187v43.24h-59.187v98.104h-42.433v-239.718h120.808v43.241h-78.375v55.133zm148.641 103.507c24.594.539 49.456 2.434 73.51 3.783v42.701c-38.646-2.434-77.293-4.863-116.75-5.676v-242.689h43.24v201.881zm109.994 49.457c13.783.812 28.377 1.623 42.43 3.242v-254.58h-42.43v251.338zm231.881-251.338l-54.863 131.615 54.863 145.127c-16.217-2.162-32.432-5.135-48.648-7.838l-31.078-79.994-31.617 73.51c-15.678-2.705-30.812-3.516-46.484-5.678l55.672-126.75-50.269-129.992h46.482l28.377 72.699 30.27-72.699h47.295z"/>
+        </svg>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-gray-400">
+        <i data-lucide="volume-2" class="w-4 h-4 text-[#E50914]"></i>
+        <span>Sound On for Ta-Dum Intro</span>
+      </div>
+    </div>
+
+    <!-- Center Profile Selection -->
+    <div class="my-auto py-8 flex flex-col items-center text-center max-w-5xl mx-auto w-full">
+      <h1 id="profile-gate-heading" class="text-3xl sm:text-5xl md:text-[3.4rem] font-normal tracking-tight text-white mb-8 sm:mb-11">
+        Who's watching?
+      </h1>
+
+      <div id="profile-cards-grid" class="flex flex-wrap justify-center gap-5 sm:gap-8 mb-12 sm:mb-16">
+        <!-- Profile avatars injected via JS -->
+      </div>
+
+      <button id="manage-profiles-btn" onclick="toggleManageProfilesMode()" class="px-6 sm:px-8 py-2 sm:py-2.5 border border-[#808080] text-[#808080] hover:text-white hover:border-white tracking-[0.18em] uppercase text-xs sm:text-base font-normal transition">
+        Manage Profiles
+      </button>
+    </div>
+
+    <div class="h-4"></div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 2. AUTHENTIC NETFLIX STICKY HEADER                                    -->
+  <!-- ===================================================================== -->
+  <header id="main-navbar" class="fixed top-0 left-0 right-0 z-40 transition-colors duration-300 netflix-nav-top">
+    <div class="px-4 sm:px-8 lg:px-14 h-16 sm:h-[68px] flex items-center justify-between gap-4">
+      
+      <!-- Left: Netflix Logo + Primary Navigation -->
+      <div class="flex items-center gap-6 lg:gap-10">
+        <a href="#" onclick="resetAllFilters(event)" class="w-20 sm:w-24 lg:w-[92px] text-[#E50914] shrink-0 block" aria-label="Netflix Home">
+          <svg viewBox="0 0 1024 276.742" fill="currentColor" class="w-full h-auto">
+            <path d="M140.803 258.904c-15.404 2.705-31.079 3.516-47.294 5.676l-49.458-144.856v151.073c-15.404 1.621-29.457 3.783-44.051 5.945v-276.742h41.08l56.212 157.021v-157.021h43.511v258.904zm85.131-157.558c16.757 0 42.431-.811 57.835-.811v43.24c-19.189 0-41.619 0-57.835.811v64.322c25.405-1.621 50.809-3.785 76.482-4.596v41.617l-119.724 9.461v-255.39h119.724v43.241h-76.482v58.105zm237.284-58.104h-44.862v198.908c-14.594 0-29.188 0-43.239.539v-199.447h-44.862v-43.242h132.965l-.002 43.242zm70.266 55.132h59.187v43.24h-59.187v98.104h-42.433v-239.718h120.808v43.241h-78.375v55.133zm148.641 103.507c24.594.539 49.456 2.434 73.51 3.783v42.701c-38.646-2.434-77.293-4.863-116.75-5.676v-242.689h43.24v201.881zm109.994 49.457c13.783.812 28.377 1.623 42.43 3.242v-254.58h-42.43v251.338zm231.881-251.338l-54.863 131.615 54.863 145.127c-16.217-2.162-32.432-5.135-48.648-7.838l-31.078-79.994-31.617 73.51c-15.678-2.705-30.812-3.516-46.484-5.678l55.672-126.75-50.269-129.992h46.482l28.377 72.699 30.27-72.699h47.295z"/>
+          </svg>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="hidden lg:flex items-center gap-5 text-[14px]">
+          <button onclick="setNavCategory('all', this)" class="nav-tab text-white font-semibold transition">Home</button>
+          <button onclick="setNavCategory('tv', this)" class="nav-tab text-[#e5e5e5] hover:text-[#b3b3b3] transition">TV Shows</button>
+          <button onclick="setNavCategory('movie', this)" class="nav-tab text-[#e5e5e5] hover:text-[#b3b3b3] transition">Movies</button>
+          <button onclick="setNavCategory('popular', this)" class="nav-tab text-[#e5e5e5] hover:text-[#b3b3b3] transition">New & Popular</button>
+          <button onclick="setNavCategory('mylist', this)" class="nav-tab text-[#e5e5e5] hover:text-[#b3b3b3] transition">My List</button>
+          <button onclick="setNavCategory('languages', this)" class="nav-tab text-[#e5e5e5] hover:text-[#b3b3b3] transition">Browse by Languages</button>
+        </nav>
+
+        <!-- Tablet Browse Dropdown -->
+        <div class="relative lg:hidden">
+          <button onclick="toggleMobileBrowseMenu()" class="flex items-center gap-1 text-xs sm:text-sm font-semibold text-white">
+            <span id="mobile-browse-label">Browse</span>
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </button>
+          <div id="mobile-browse-dropdown" class="hidden absolute left-0 mt-4 w-52 bg-black/95 border-t-2 border-white shadow-2xl py-2 z-50 text-center text-sm">
+            <button onclick="setNavCategory('all', null, 'Home')" class="block w-full py-2.5 text-white font-semibold hover:bg-white/10">Home</button>
+            <button onclick="setNavCategory('tv', null, 'TV Shows')" class="block w-full py-2.5 text-gray-300 hover:bg-white/10">TV Shows</button>
+            <button onclick="setNavCategory('movie', null, 'Movies')" class="block w-full py-2.5 text-gray-300 hover:bg-white/10">Movies</button>
+            <button onclick="setNavCategory('popular', null, 'New & Popular')" class="block w-full py-2.5 text-gray-300 hover:bg-white/10">New & Popular</button>
+            <button onclick="setNavCategory('mylist', null, 'My List')" class="block w-full py-2.5 text-gray-300 hover:bg-white/10">My List</button>
+            <button onclick="setNavCategory('languages', null, 'Languages')" class="block w-full py-2.5 text-gray-300 hover:bg-white/10">Browse by Languages</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Expandable Search, Kids, Notifications, Profile Dropdown -->
+      <div class="flex items-center gap-3 sm:gap-5">
+        
+        <!-- Authentic Expandable Search Input -->
+        <div id="search-box-wrapper" class="flex items-center transition-all duration-300">
+          <button id="search-toggle-btn" onclick="expandSearchBox()" class="p-1.5 text-white hover:text-gray-300 transition" aria-label="Search">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+          <div id="search-input-container" class="hidden items-center bg-black/85 border border-white px-2.5 py-1.5 w-44 sm:w-64">
+            <i data-lucide="search" class="w-4 h-4 text-white shrink-0"></i>
+            <input 
+              id="netflix-search-input"
+              type="text" 
+              placeholder="Titles, people, genres" 
+              class="bg-transparent text-xs sm:text-sm text-white placeholder-gray-400 focus:outline-none ml-2.5 w-full"
+              oninput="onSearchInput(this.value)"
+              onblur="handleSearchBlur()"
+            />
+            <button id="search-clear-x" onclick="clearSearchInput()" class="hidden text-white hover:text-gray-300 ml-1">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Kids Quick Link -->
+        <button onclick="switchToKidsProfile()" class="hidden sm:inline-block text-sm text-[#e5e5e5] hover:text-white transition">
+          Kids
+        </button>
+
+        <!-- Notification Bell with Rich Thumbnails -->
+        <div class="relative">
+          <button onclick="toggleNotifPopover()" class="p-1.5 text-white hover:text-gray-300 relative transition" aria-label="Notifications">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#E50914]"></span>
+          </button>
+
+          <div id="notif-popover" class="hidden absolute right-0 mt-4 w-80 sm:w-96 bg-black/95 border-t-2 border-white border-x border-b border-white/15 shadow-2xl z-50">
+            <div class="divide-y divide-white/15 max-h-96 overflow-y-auto">
+              <div onclick="openDetailById(1); toggleNotifPopover()" class="p-3.5 hover:bg-white/10 cursor-pointer flex items-center gap-3.5 transition">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Stranger" class="w-24 h-14 object-cover rounded-sm shrink-0 bg-zinc-800" />
+                <div>
+                  <p class="text-xs text-gray-400">New Arrival</p>
+                  <p class="text-sm text-gray-100 font-medium leading-snug">Stranger Things: The Final Chapter</p>
+                  <p class="text-[11px] text-gray-500 mt-1">Today</p>
+                </div>
+              </div>
+              <div onclick="openDetailById(2); toggleNotifPopover()" class="p-3.5 hover:bg-white/10 cursor-pointer flex items-center gap-3.5 transition">
+                <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=300&q=80" alt="Heist" class="w-24 h-14 object-cover rounded-sm shrink-0 bg-zinc-800" />
+                <div>
+                  <p class="text-xs text-gray-400">Top 10 in India</p>
+                  <p class="text-sm text-gray-100 font-medium leading-snug">Money Heist: Mumbai Syndicate</p>
+                  <p class="text-[11px] text-gray-500 mt-1">2 days ago</p>
+                </div>
+              </div>
+              <div onclick="openDetailById(4); toggleNotifPopover()" class="p-3.5 hover:bg-white/10 cursor-pointer flex items-center gap-3.5 transition">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80" alt="Dark" class="w-24 h-14 object-cover rounded-sm shrink-0 bg-zinc-800" />
+                <div>
+                  <p class="text-xs text-gray-400">Continue Watching</p>
+                  <p class="text-sm text-gray-100 font-medium leading-snug">Dark Horizon • S2:E4 "The Signal"</p>
+                  <p class="text-[11px] text-gray-500 mt-1">5 days ago</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Switcher Dropdown -->
+        <div class="relative">
+          <button onclick="toggleAccountMenu()" class="flex items-center gap-2 group focus:outline-none">
+            <div id="header-profile-avatar" class="w-8 h-8 rounded overflow-hidden shadow">
+              <!-- SVG injected via JS -->
+            </div>
+            <i data-lucide="chevron-down" id="header-caret" class="w-4 h-4 text-white transition-transform duration-200"></i>
+          </button>
+
+          <div id="account-dropdown" class="hidden absolute right-0 mt-4 w-56 bg-black/95 border border-white/15 shadow-2xl py-2 z-50 text-xs sm:text-[13px]">
+            <div id="account-dropdown-profiles" class="space-y-1 pb-2 border-b border-white/15">
+              <!-- Other profiles injected via JS -->
+            </div>
+            <div class="py-1.5 space-y-1 border-b border-white/15">
+              <button onclick="returnToProfileGate(true)" class="w-full text-left px-3.5 py-2 text-gray-200 hover:underline flex items-center gap-3">
+                <i data-lucide="pencil" class="w-4 h-4 text-gray-400"></i> Manage Profiles
+              </button>
+              <button onclick="returnToProfileGate(false)" class="w-full text-left px-3.5 py-2 text-gray-200 hover:underline flex items-center gap-3">
+                <i data-lucide="users" class="w-4 h-4 text-gray-400"></i> Switch Profile
+              </button>
+              <button onclick="showToast('Account: Ultra HD 4K Plan Active')" class="w-full text-left px-3.5 py-2 text-gray-200 hover:underline flex items-center gap-3">
+                <i data-lucide="user" class="w-4 h-4 text-gray-400"></i> Account
+              </button>
+              <button onclick="showToast('Netflix Help Centre • 24/7 Support')" class="w-full text-left px-3.5 py-2 text-gray-200 hover:underline flex items-center gap-3">
+                <i data-lucide="help-circle" class="w-4 h-4 text-gray-400"></i> Help Centre
+              </button>
+            </div>
+            <button onclick="returnToProfileGate(false)" class="w-full text-center py-2.5 text-white hover:underline font-medium">
+              Sign out of Netflix
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- 3. MAIN CONTENT AREA (SEARCH GRID OR BILLBOARD + CAROUSELS)           -->
+  <!-- ===================================================================== -->
+  <main class="min-h-screen pb-16">
+
+    <!-- LIVE SEARCH RESULTS VIEW -->
+    <section id="search-view" class="hidden pt-24 sm:pt-28 px-4 sm:px-8 lg:px-14">
+      <div class="flex flex-wrap items-center gap-3 mb-6 text-sm text-gray-400">
+        <span>Explore titles related to:</span>
+        <span id="search-active-term" class="text-white font-semibold text-base"></span>
+      </div>
+      <div id="search-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-3 gap-y-8">
+        <!-- Matching titles injected via JS -->
+      </div>
+      <div id="search-empty" class="hidden py-24 text-center max-w-md mx-auto">
+        <p class="text-sm text-gray-300 mb-3">Your search for "<span id="search-empty-term" class="text-white font-semibold"></span>" did not have any matches.</p>
+        <p class="text-xs text-gray-400">Suggestions: Try different keywords like "Action", "Thriller", "Sci-Fi", "India", or "Heist".</p>
+      </div>
+    </section>
+
+    <!-- BROWSE VIEW -->
+    <div id="browse-container">
+
+      <!-- FULL-BLEED CINEMATIC BILLBOARD HERO (85vh-90vh) -->
+      <section id="billboard-section" class="relative w-full h-[82vh] sm:h-[88vh] lg:h-[90vh] min-h-[540px] max-h-[960px] overflow-hidden select-none">
+        
+        <!-- Ambient Motion Artwork Backdrop -->
+        <div id="billboard-bg" class="absolute inset-0 bg-cover bg-center billboard-ambient transition-all duration-700"></div>
+        
+        <!-- Authentic Dual Netflix Vignettes -->
+        <div class="absolute inset-0 billboard-vignette-left"></div>
+        <div class="absolute inset-x-0 bottom-0 h-56 sm:h-72 billboard-vignette-bottom"></div>
+
+        <!-- Left Billboard Info & Buttons -->
+        <div class="relative z-10 h-full flex flex-col justify-center px-4 sm:px-8 lg:px-14 pt-12 sm:pt-16 max-w-3xl">
+          
+          <!-- N SERIES / N FILM Badge -->
+          <div class="flex items-center gap-2 mb-2 sm:mb-3">
+            <svg class="w-4 h-6 sm:w-5 sm:h-7 text-[#E50914]" viewBox="0 0 111 190" fill="currentColor">
+              <path d="M0 0H36V190C24 187.5 12 186.5 0 187V0Z"/>
+              <path d="M75 0H111V187C99 186.5 87 187.5 75 190V0Z"/>
+              <path d="M0 0H36L111 187C98.5 186.5 86.5 187.5 75 190L0 0Z"/>
+            </svg>
+            <span id="billboard-type-label" class="text-xs sm:text-sm font-bold tracking-[0.35em] text-gray-200 uppercase">SERIES</span>
+          </div>
+
+          <!-- Stylized Display Title Logo -->
+          <h1 id="billboard-title" class="font-display text-5xl sm:text-7xl lg:text-[5.5rem] text-white tracking-wide leading-[0.92] drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)] mb-3 sm:mb-4">
+            STRANGER SHADOWS
+          </h1>
+
+          <!-- Top 10 Red Square Badge -->
+          <div id="billboard-top10-row" class="flex items-center gap-2.5 mb-3 sm:mb-4">
+            <div class="bg-[#E50914] text-white font-black text-[10px] sm:text-xs leading-none px-1.5 py-1 rounded-[2px] text-center tracking-tighter">
+              TOP<br><span class="text-xs sm:text-sm">10</span>
+            </div>
+            <span id="billboard-rank-text" class="text-sm sm:text-lg font-bold text-white drop-shadow">
+              #1 in TV Shows Today
+            </span>
+          </div>
+
+          <!-- Compelling 2-Line Synopsis -->
+          <p id="billboard-synopsis" class="text-sm sm:text-base lg:text-[1.12rem] text-white/95 font-normal leading-snug line-clamp-2 sm:line-clamp-3 max-w-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] mb-5 sm:mb-6">
+            When a classified quantum experiment tears open an unseen rift beneath Mumbai, a small town's secrets collide with supernatural forces and a relentless covert agency.
+          </p>
+
+          <!-- Crisp White Play + Translucent Gray More Info Buttons -->
+          <div class="flex items-center gap-3">
+            <button id="billboard-play-btn" class="flex items-center justify-center gap-2.5 bg-white hover:bg-white/80 text-black font-bold px-5 sm:px-7 py-2 sm:py-2.5 rounded-[4px] text-sm sm:text-lg transition active:scale-95 shadow-lg">
+              <i data-lucide="play" class="w-5 h-5 sm:w-6 sm:h-6 fill-black"></i>
+              <span>Play</span>
+            </button>
+
+            <button id="billboard-info-btn" class="flex items-center justify-center gap-2.5 bg-[#6d6d6eb3] hover:bg-[#6d6d6e66] text-white font-semibold px-5 sm:px-7 py-2 sm:py-2.5 rounded-[4px] text-sm sm:text-lg transition active:scale-95">
+              <i data-lucide="info" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+              <span>More Info</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right-Aligned Mute/Unmute Toggle + Maturity Rating Pill -->
+        <div class="absolute right-0 bottom-[18%] sm:bottom-[22%] z-20 flex items-center gap-3 sm:gap-4">
+          <button onclick="cycleBillboardFeatured()" title="Preview Next Featured Title" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/70 bg-black/30 hover:bg-white/15 flex items-center justify-center text-white transition">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+
+          <button id="billboard-mute-btn" onclick="toggleBillboardMute()" title="Toggle Preview Audio" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/70 bg-black/30 hover:bg-white/15 flex items-center justify-center text-white transition">
+            <i data-lucide="volume-x" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+          </button>
+
+          <div id="billboard-maturity" class="bg-[#333333]/65 border-l-[3px] border-[#dcdcdc] py-1 sm:py-1.5 pl-3 pr-7 sm:pr-12 text-xs sm:text-base font-medium text-white">
+            U/A 16+
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENT CAROUSELS CONTAINER -->
+      <div id="rows-wrapper" class="relative z-20 -mt-16 sm:-mt-28 lg:-mt-36 space-y-8 sm:space-y-12">
+        <!-- Rows injected dynamically via JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 4. FLOATING NETFLIX HOVER-EXPAND MINI-MODAL PREVIEW CARD              -->
+  <!-- ===================================================================== -->
+  <div 
+    id="hover-preview-card" 
+    onmouseenter="cancelHoverCardClose()" 
+    onmouseleave="scheduleHoverCardClose()"
+    class="fixed z-50 hidden w-[310px] sm:w-[340px] bg-[#181818] rounded-md overflow-hidden shadow-[0_16px_40px_rgba(0,0,0,0.92)] ring-1 ring-white/15 mini-modal-enter"
+  >
+    <!-- Top Video/Artwork Preview Area -->
+    <div id="hpc-media" onclick="playFromHoverCard()" class="relative w-full aspect-video bg-zinc-900 bg-cover bg-center cursor-pointer overflow-hidden group">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-black/25"></div>
+      
+      <!-- N Emblem -->
+      <span class="absolute top-2.5 left-3 bg-[#E50914] text-white font-display text-xs px-1.5 py-0.5 rounded-[2px] tracking-widest shadow">N</span>
+      
+      <!-- Title Overlay inside Preview -->
+      <div class="absolute bottom-2.5 left-3 right-12">
+        <h4 id="hpc-title" class="font-display text-2xl text-white tracking-wide leading-none drop-shadow-md truncate">TITLE</h4>
+      </div>
+
+      <!-- Mute Toggle -->
+      <button onclick="event.stopPropagation(); toggleHoverCardMute(this)" class="absolute bottom-2.5 right-3 w-7 h-7 rounded-full border border-white/60 bg-black/50 hover:border-white flex items-center justify-center text-white transition">
+        <i data-lucide="volume-x" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+
+    <!-- Bottom Interactive Controls & Metadata -->
+    <div class="p-3.5 space-y-3 bg-[#181818]">
+      <!-- Action Icon Row -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <!-- White Circular Play -->
+          <button onclick="playFromHoverCard()" title="Play" class="w-9 h-9 rounded-full bg-white hover:bg-gray-200 text-black flex items-center justify-center transition transform active:scale-90">
+            <i data-lucide="play" class="w-4 h-4 fill-black ml-0.5"></i>
+          </button>
+
+          <!-- Circular + / Check My List -->
+          <button id="hpc-mylist-btn" onclick="toggleMyListFromHoverCard()" title="Add to My List" class="w-9 h-9 rounded-full border-2 border-gray-400 hover:border-white bg-[#2a2a2a]/60 text-white flex items-center justify-center transition transform active:scale-90">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Circular Thumbs Up with Hover Reaction Tray -->
+          <div class="relative group/like">
+            <button id="hpc-like-btn" onclick="toggleLikeFromHoverCard()" title="I like this" class="w-9 h-9 rounded-full border-2 border-gray-400 hover:border-white bg-[#2a2a2a]/60 text-white flex items-center justify-center transition transform active:scale-90">
+              <i data-lucide="thumbs-up" class="w-4 h-4"></i>
+            </button>
+            <!-- Netflix Reaction Popover -->
+            <div class="hidden group-hover/like:flex items-center gap-1.5 absolute -top-11 left-1/2 -translate-x-1/2 bg-[#232323] border border-white/20 px-2.5 py-1.5 rounded-full shadow-2xl z-30">
+              <button onclick="rateTitle('Not for me')" title="Not for me" class="p-1 hover:scale-125 transition text-gray-300 hover:text-white">
+                <i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="rateTitle('Liked')" title="I like this" class="p-1 hover:scale-125 transition text-gray-300 hover:text-white">
+                <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="rateTitle('Loved')" title="Love this!" class="p-1 hover:scale-125 transition text-[#E50914]">
+                <i data-lucide="heart" class="w-3.5 h-3.5 fill-[#E50914]"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right-Aligned Chevron More Info -->
+        <button onclick="openDetailFromHoverCard()" title="Episodes & Info" class="w-9 h-9 rounded-full border-2 border-gray-400 hover:border-white bg-[#2a2a2a]/60 text-white flex items-center justify-center transition transform active:scale-90">
+          <i data-lucide="chevron-down" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Authentic Metadata Line -->
+      <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+        <span id="hpc-match" class="text-[#46d369] font-bold">98% Match</span>
+        <span id="hpc-maturity" class="px-1.5 py-0.2 border border-gray-500 text-gray-200 text-[11px]">U/A 16+</span>
+        <span id="hpc-duration" class="text-gray-300">2 Seasons</span>
+        <span class="px-1 border border-gray-500 text-[10px] text-gray-300 rounded-[2px]">HD</span>
+      </div>
+
+      <!-- Bullet-Separated Genre Tags -->
+      <div id="hpc-genres" class="flex flex-wrap items-center gap-1.5 text-xs text-gray-200">
+        <!-- Genres injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 5. AUTHENTIC NETFLIX DETAIL PREVIEW MODAL                             -->
+  <!-- ===================================================================== -->
+  <div id="detail-modal" class="fixed inset-0 z-[70] hidden items-start justify-center bg-black/75 backdrop-blur-[2px] overflow-y-auto p-2 sm:p-6 md:p-10" onclick="onDetailBackdropClick(event)">
+    <div class="relative w-full max-w-[850px] bg-[#181818] rounded-lg overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.95)] my-4 modal-enter">
+      
+      <!-- Top-Right Circular Close Button -->
+      <button onclick="closeDetailModal()" class="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-[#181818] hover:bg-[#2a2a2a] text-white flex items-center justify-center transition shadow-lg">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Hero Banner Preview -->
+      <div id="dm-banner" class="relative w-full h-64 sm:h-[420px] bg-cover bg-center flex items-end">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#181818]/30 to-transparent"></div>
+        
+        <div class="relative z-10 w-full px-6 sm:px-11 pb-6 sm:pb-8 space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="bg-[#E50914] text-white font-display text-sm px-1.5 py-0.5 rounded-[2px] tracking-widest">N</span>
+            <span id="dm-badge" class="text-xs font-bold tracking-[0.25em] text-gray-200 uppercase">SERIES</span>
+          </div>
+
+          <h2 id="dm-title" class="font-display text-4xl sm:text-6xl text-white tracking-wide leading-none drop-shadow-xl">
+            TITLE
+          </h2>
+
+          <div class="flex flex-wrap items-center gap-2.5 pt-1">
+            <button id="dm-play-btn" class="flex items-center gap-2 bg-white hover:bg-white/85 text-black font-bold px-6 sm:px-8 py-2 rounded-[4px] text-sm sm:text-base transition active:scale-95">
+              <i data-lucide="play" class="w-5 h-5 fill-black"></i>
+              <span>Play</span>
+            </button>
+
+            <button id="dm-mylist-btn" class="w-10 h-10 rounded-full border-2 border-gray-400 hover:border-white bg-[#2a2a2a]/70 text-white flex items-center justify-center transition">
+              <i data-lucide="plus" class="w-5 h-5"></i>
+            </button>
+
+            <button onclick="toggleDetailLike(this)" class="w-10 h-10 rounded-full border-2 border-gray-400 hover:border-white bg-[#2a2a2a]/70 text-white flex items-center justify-center transition" title="Rate">
+              <i data-lucide="thumbs-up" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Column Metadata Grid -->
+      <div class="px-6 sm:px-11 pt-2 pb-8 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <div class="md:col-span-2 space-y-3.5">
+          <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm font-semibold">
+            <span id="dm-match" class="text-[#46d369] font-bold">99% Match</span>
+            <span id="dm-year" class="text-gray-300">2026</span>
+            <span id="dm-maturity" class="px-1.5 py-0.5 border border-gray-500 text-gray-200 text-xs">U/A 16+</span>
+            <span id="dm-duration" class="text-gray-300">2 Seasons</span>
+            <span class="px-1.5 py-0.5 border border-gray-500 text-gray-300 text-[10px] rounded-[2px]">Dolby Vision</span>
+            <span class="px-1.5 py-0.5 border border-gray-500 text-gray-300 text-[10px] rounded-[2px]">5.1</span>
+          </div>
+
+          <p id="dm-synopsis" class="text-sm sm:text-[15px] text-white/90 leading-relaxed">
+            Synopsis text goes here.
+          </p>
+        </div>
+
+        <div class="space-y-2.5 text-xs sm:text-[13px] leading-relaxed">
+          <div>
+            <span class="text-[#777777]">Cast: </span>
+            <span id="dm-cast" class="text-gray-200">Cast members</span>
+          </div>
+          <div>
+            <span class="text-[#777777]">Genres: </span>
+            <span id="dm-genres" class="text-gray-200">Genres list</span>
+          </div>
+          <div>
+            <span class="text-[#777777]">This show is: </span>
+            <span id="dm-tags" class="text-gray-200">Tags</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EPISODES SELECTOR (Shown for TV Series) -->
+      <div id="dm-episodes-section" class="px-6 sm:px-11 pb-8 border-t border-white/10 pt-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl sm:text-2xl font-bold text-white">Episodes</h3>
+          <select id="dm-season-select" onchange="renderEpisodesList(this.value)" class="bg-[#242424] border border-white/25 text-white text-sm font-semibold px-3.5 py-2 rounded focus:outline-none">
+            <option value="1">Season 1</option>
+            <option value="2">Season 2</option>
+          </select>
+        </div>
+
+        <div id="dm-episodes-list" class="divide-y divide-white/10">
+          <!-- Clickable episode rows injected via JS -->
+        </div>
+      </div>
+
+      <!-- MORE LIKE THIS GRID -->
+      <div class="px-6 sm:px-11 pb-8 border-t border-white/10 pt-6">
+        <h3 class="text-xl sm:text-2xl font-bold text-white mb-4">More Like This</h3>
+        <div id="dm-similar-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <!-- Similar cards injected via JS -->
+        </div>
+      </div>
+
+      <!-- ABOUT FOOTER SECTION -->
+      <div class="px-6 sm:px-11 pb-10 border-t border-white/10 pt-6 space-y-2 text-xs sm:text-[13px]">
+        <h3 class="text-lg sm:text-xl font-bold text-white mb-3">About <span id="dm-about-title">Title</span></h3>
+        <div><span class="text-[#777777]">Creators: </span><span id="dm-creators" class="text-gray-200">Vikramaditya Motwane, Anurag Kashyap</span></div>
+        <div><span class="text-[#777777]">Cast: </span><span id="dm-about-cast" class="text-gray-200">Cast</span></div>
+        <div><span class="text-[#777777]">Genres: </span><span id="dm-about-genres" class="text-gray-200">Genres</span></div>
+        <div><span class="text-[#777777]">Maturity rating: </span><span id="dm-about-maturity" class="px-1.5 py-0.5 border border-gray-500 text-gray-200 text-xs mx-1">U/A 16+</span> <span class="text-gray-300">Suitable for persons aged 16 and above.</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 6. FULL-SCREEN AUTHENTIC NETFLIX THEATER VIDEO PLAYER                 -->
+  <!-- ===================================================================== -->
+  <div id="theater-player" class="fixed inset-0 z-[95] hidden bg-black flex-col justify-between select-none">
+    
+    <!-- Animated Cinematic Video Canvas -->
+    <div onclick="toggleTheaterPlay()" class="relative w-full h-full flex items-center justify-center overflow-hidden bg-black cursor-pointer">
+      <div id="tp-visual" class="absolute inset-0 bg-cover bg-center opacity-70 theater-motion"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/75"></div>
+
+      <!-- Live Subtitles Overlay -->
+      <div id="tp-subtitle-box" class="absolute bottom-28 sm:bottom-32 left-1/2 -translate-x-1/2 z-20 max-w-2xl w-[90%] text-center pointer-events-none">
+        <span id="tp-subtitle-text" class="inline-block bg-black/75 text-white text-sm sm:text-2xl px-4 py-1.5 rounded font-medium tracking-wide shadow-lg">
+          [Atmospheric synth score echoes]
+        </span>
+      </div>
+
+      <!-- Center Giant Pause/Play Feedback Animation -->
+      <div id="tp-center-feedback" class="hidden z-30 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-black/65 border border-white/30 flex items-center justify-center text-white">
+        <i data-lucide="play" class="w-10 h-10 sm:w-12 sm:h-12 fill-white"></i>
+      </div>
+    </div>
+
+    <!-- Top Player Header -->
+    <div class="absolute top-0 inset-x-0 z-30 p-5 sm:p-8 flex items-center justify-between bg-gradient-to-b from-black/85 to-transparent">
+      <button onclick="closeTheaterPlayer()" class="p-2 text-white hover:scale-110 transition" title="Back to Browse">
+        <i data-lucide="arrow-left" class="w-7 h-7 sm:w-8 sm:h-8"></i>
+      </button>
+
+      <button onclick="showToast('Playback issue reported to Netflix Engineering')" class="p-2 text-gray-300 hover:text-white transition" title="Report a Problem">
+        <i data-lucide="flag" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Bottom Scrubber & Full Netflix Controls -->
+    <div class="absolute bottom-0 inset-x-0 z-30 px-5 sm:px-10 pb-6 sm:pb-9 pt-12 bg-gradient-to-t from-black via-black/90 to-transparent space-y-4">
+      
+      <!-- Red Scrubber Bar with Glowing Thumb & Hover Time Tooltip -->
+      <div class="flex items-center gap-4">
+        <div 
+          id="tp-scrubber-track" 
+          onmousemove="previewScrubberTime(event)" 
+          onmouseleave="hideScrubberTooltip()"
+          onclick="seekTheaterTimeline(event)"
+          class="relative flex-1 h-1.5 hover:h-2.5 bg-white/30 cursor-pointer transition-all group"
+        >
+          <!-- Hover Time Tooltip -->
+          <div id="tp-hover-tooltip" class="hidden absolute -top-9 -translate-x-1/2 bg-[#181818] border border-white/25 text-white text-xs font-mono px-2 py-0.5 rounded shadow-lg pointer-events-none">
+            01:15
+          </div>
+
+          <!-- Red Progress Fill -->
+          <div id="tp-progress-bar" class="h-full bg-[#E50914] relative" style="width: 22%;">
+            <span class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#E50914] shadow-[0_0_14px_#E50914] scale-100 group-hover:scale-125 transition-transform"></span>
+          </div>
+        </div>
+        <span id="tp-remaining-time" class="text-xs sm:text-sm font-mono text-gray-300 w-14 text-right">42:18</span>
+      </div>
+
+      <!-- Control Icons Row -->
+      <div class="flex items-center justify-between gap-2">
+        <!-- Left Controls -->
+        <div class="flex items-center gap-4 sm:gap-7">
+          <button onclick="toggleTheaterPlay()" id="tp-play-btn" class="text-white hover:scale-110 transition">
+            <i data-lucide="pause" class="w-7 h-7 sm:w-8 sm:h-8 fill-white"></i>
+          </button>
+
+          <button onclick="skipTheater(-10)" class="text-white hover:scale-110 transition" title="Back 10s">
+            <i data-lucide="rotate-ccw" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+          </button>
+
+          <button onclick="skipTheater(10)" class="text-white hover:scale-110 transition" title="Forward 10s">
+            <i data-lucide="rotate-cw" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button onclick="toggleTheaterMute()" id="tp-mute-btn" class="text-white hover:scale-110 transition">
+              <i data-lucide="volume-2" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+            </button>
+            <input 
+              id="tp-vol-slider"
+              type="range" min="0" max="100" value="85" 
+              oninput="updateTheaterVolume(this.value)"
+              class="hidden sm:block w-24 accent-[#E50914] cursor-pointer h-1 bg-white/30 rounded"
+            />
+          </div>
+        </div>
+
+        <!-- Center Title & Episode Info -->
+        <div class="hidden md:flex items-center gap-2 text-sm lg:text-base truncate max-w-md">
+          <span id="tp-title-label" class="font-bold text-white">Stranger Shadows</span>
+          <span id="tp-ep-label" class="text-gray-400">S1:E1 "The Breach"</span>
+        </div>
+
+        <!-- Right Controls: Next Episode, Audio/Subtitles, Speed, Fullscreen -->
+        <div class="flex items-center gap-4 sm:gap-6 relative">
+          <button onclick="playNextEpisode()" class="text-white hover:scale-110 transition" title="Next Episode">
+            <i data-lucide="skip-forward" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+          </button>
+
+          <!-- Audio & Subtitles Popover Trigger -->
+          <div class="relative">
+            <button onclick="toggleAudioSubMenu()" class="text-white hover:scale-110 transition" title="Audio & Subtitles">
+              <i data-lucide="subtitles" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+            </button>
+
+            <div id="tp-audio-sub-popover" class="hidden absolute bottom-12 right-0 w-80 bg-[#181818]/95 border border-white/20 rounded shadow-2xl p-4 grid grid-cols-2 gap-4 text-xs z-40">
+              <div>
+                <p class="font-bold text-white text-sm mb-2">Audio</p>
+                <ul class="space-y-1.5 text-gray-300">
+                  <li onclick="selectAudioTrack('Hindi [Original]')" class="cursor-pointer hover:text-white flex items-center gap-1.5 text-white font-semibold"><span>✓</span> Hindi [Original]</li>
+                  <li onclick="selectAudioTrack('English (5.1)')" class="cursor-pointer hover:text-white pl-4">English (5.1)</li>
+                  <li onclick="selectAudioTrack('Tamil')" class="cursor-pointer hover:text-white pl-4">Tamil</li>
+                  <li onclick="selectAudioTrack('Telugu')" class="cursor-pointer hover:text-white pl-4">Telugu</li>
+                </ul>
+              </div>
+              <div>
+                <p class="font-bold text-white text-sm mb-2">Subtitles</p>
+                <ul class="space-y-1.5 text-gray-300">
+                  <li onclick="selectSubtitleTrack('English')" class="cursor-pointer hover:text-white flex items-center gap-1.5 text-white font-semibold"><span>✓</span> English</li>
+                  <li onclick="selectSubtitleTrack('Hindi')" class="cursor-pointer hover:text-white pl-4">Hindi</li>
+                  <li onclick="selectSubtitleTrack('Español')" class="cursor-pointer hover:text-white pl-4">Español</li>
+                  <li onclick="selectSubtitleTrack('Off')" class="cursor-pointer hover:text-white pl-4">Off</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Playback Speed Selector -->
+          <div class="relative">
+            <button onclick="toggleSpeedMenu()" id="tp-speed-btn" class="text-white hover:scale-110 transition font-bold text-xs sm:text-sm border border-white/40 px-2 py-0.5 rounded" title="Playback Speed">
+              1x
+            </button>
+            <div id="tp-speed-popover" class="hidden absolute bottom-12 right-0 w-36 bg-[#181818]/95 border border-white/20 rounded shadow-2xl p-2 text-xs z-40">
+              <p class="text-gray-400 font-semibold px-2 py-1">Playback Speed</p>
+              <button onclick="setPlaybackSpeed(0.75)" class="w-full text-left px-2 py-1.5 hover:bg-white/10 rounded text-gray-200">0.75x</button>
+              <button onclick="setPlaybackSpeed(1)" class="w-full text-left px-2 py-1.5 hover:bg-white/10 rounded text-white font-bold">1x (Normal)</button>
+              <button onclick="setPlaybackSpeed(1.25)" class="w-full text-left px-2 py-1.5 hover:bg-white/10 rounded text-gray-200">1.25x</button>
+              <button onclick="setPlaybackSpeed(1.5)" class="w-full text-left px-2 py-1.5 hover:bg-white/10 rounded text-gray-200">1.5x</button>
+            </div>
+          </div>
+
+          <button onclick="toggleTheaterFullscreen()" class="text-white hover:scale-110 transition" title="Fullscreen">
+            <i data-lucide="maximize" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 7. AUTHENTIC NETFLIX FOOTER                                           -->
+  <!-- ===================================================================== -->
+  <footer class="max-w-5xl mx-auto px-6 sm:px-10 pt-14 pb-12 text-[#808080] text-xs sm:text-[13px]">
+    <div class="flex items-center gap-6 text-white mb-6">
+      <a href="#" onclick="event.preventDefault()" class="hover:text-gray-300"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+      <a href="#" onclick="event.preventDefault()" class="hover:text-gray-300"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+      <a href="#" onclick="event.preventDefault()" class="hover:text-gray-300"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+      <a href="#" onclick="event.preventDefault()" class="hover:text-gray-300"><i data-lucide="youtube" class="w-6 h-6"></i></a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mb-7">
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Audio Description</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Help Centre</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Gift Cards</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Media Centre</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Investor Relations</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Jobs</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Terms of Use</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Privacy</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Legal Notices</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Cookie Preferences</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Corporate Information</a>
+      <a href="#" onclick="event.preventDefault()" class="hover:underline">Contact Us</a>
+    </div>
+
+    <button onclick="showToast('Service Code: 842-910-IN')" class="border border-[#808080] hover:text-white hover:border-white px-2.5 py-1.5 mb-5 transition">
+      Service Code
+    </button>
+
+    <p class="text-[11px] text-[#808080]">© 1997–2026 Netflix, Inc.</p>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- 8. SUBTLE TOAST FEEDBACK                                              -->
+  <!-- ===================================================================== -->
+  <div id="netflix-toast" class="fixed bottom-7 left-1/2 -translate-x-1/2 z-[110] translate-y-16 opacity-0 pointer-events-none transition-all duration-300 bg-[#181818] border border-white/25 text-white px-5 py-2.5 rounded shadow-2xl text-xs sm:text-sm font-medium flex items-center gap-2.5">
+    <span class="w-2 h-2 rounded-full bg-[#E50914]"></span>
+    <span id="netflix-toast-text">Notification</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT ENGINE                                                     -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // 1. AUTHENTIC SMILING NETFLIX PROFILE AVATARS & USER PROFILES
+    // =========================================================================
+    const AVATAR_SVGS = {
+      blue: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect width="100" height="100" fill="#0071EB"/><circle cx="32" cy="38" r="6.5" fill="#fff"/><circle cx="68" cy="38" r="6.5" fill="#fff"/><path d="M27 57 Q50 76 74 53" stroke="#fff" stroke-width="6.5" stroke-linecap="round" fill="none"/></svg>`,
+      red: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect width="100" height="100" fill="#E50914"/><circle cx="32" cy="38" r="6.5" fill="#fff"/><circle cx="68" cy="38" r="6.5" fill="#fff"/><path d="M27 57 Q50 76 74 53" stroke="#fff" stroke-width="6.5" stroke-linecap="round" fill="none"/></svg>`,
+      yellow: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect width="100" height="100" fill="#F5B800"/><circle cx="32" cy="38" r="6.5" fill="#fff"/><circle cx="68" cy="38" r="6.5" fill="#fff"/><path d="M27 57 Q50 76 74 53" stroke="#fff" stroke-width="6.5" stroke-linecap="round" fill="none"/></svg>`,
+      green: `<svg viewBox="0 0 100 100" class="w-full h-full"><rect width="100" height="100" fill="#2BB673"/><circle cx="32" cy="38" r="6.5" fill="#fff"/><circle cx="68" cy="38" r="6.5" fill="#fff"/><path d="M27 57 Q50 76 74 53" stroke="#fff" stroke-width="6.5" stroke-linecap="round" fill="none"/></svg>`,
+      kids: `<svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="kidsGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF5E62"/><stop offset="50%" stop-color="#FF9966"/><stop offset="100%" stop-color="#38EF7D"/></linearGradient></defs><rect width="100" height="100" fill="url(#kidsGrad)"/><text x="50" y="58" text-anchor="middle" fill="#fff" font-family="Bebas Neue, sans-serif" font-size="34" letter-spacing="2">KIDS</text></svg>`
+    };
+
+    let PROFILES = [
+      { id: 'p1', name: 'Aarav', theme: 'blue', isKids: false },
+      { id: 'p2', name: 'Ananya', theme: 'red', isKids: false },
+      { id: 'p3', name: 'Kabir', theme: 'yellow', isKids: false },
+      { id: 'p4', name: 'Riya', theme: 'green', isKids: false },
+      { id: 'p5', name: 'Kids', theme: 'kids', isKids: true }
+    ];
+
+    // =========================================================================
+    // 2. HYPER-RICH NETFLIX CATALOG DATA
+    // =========================================================================
+    const CATALOG = [
+      {
+        id: 1,
+        title: "Stranger Shadows",
+        type: "tv",
+        badge: "SERIES",
+        top10Rank: 1,
+        match: "99% Match",
+        year: 2026,
+        maturity: "U/A 16+",
+        duration: "4 Seasons",
+        genres: ["Sci-Fi", "Horror", "Mystery"],
+        tags: "Ominous, Mind-Bending, Suspenseful",
+        cast: "Millie Bobby Brown, Finn Wolfhard, Winona Ryder, David Harbour",
+        creators: "The Duffer Brothers",
+        language: "English",
+        progress: 68,
+        episodeInfo: 'S4:E7 "The Massacre at Hawkins Lab"',
+        categories: ["continue", "top10", "trending", "scifi", "originals"],
+        synopsis: "When a classified quantum experiment tears open an unseen rift beneath Hawkins, a small town's secrets collide with supernatural forces and a relentless covert agency.",
+        backdrop: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "ELEVEN: The gate isn't closing... something is pushing back from the other side.",
+          "HOPPER: Stay behind me! Nobody moves until we clear the perimeter!",
+          "[Low-frequency synth bass pulses as lights flicker violently]"
+        ],
+        episodes: [
+          { num: 1, title: "Chapter One: The Hellfire Club", dur: "58m", desc: "Darkness returns to Hawkins just in time for spring break, triggering fresh terror, disturbing memories, and an ominous new threat.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" },
+          { num: 2, title: "Chapter Two: Vecna's Curse", dur: "1h 15m", desc: "A plane brings Mike to California — and a dead body brings Hawkins to a halt. Nancy goes looking for leads on a shaken Eddie.", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80" },
+          { num: 3, title: "Chapter Three: The Monster and the Superhero", dur: "1h 03m", desc: "Murray and Joyce fly to Alaska, and El faces serious consequences. Robin and Nancy dig up dirt on Hawkins' demons.", img: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=500&q=80" }
+        ]
+      },
+      {
+        id: 2,
+        title: "Money Heist: Mumbai",
+        type: "tv",
+        badge: "SERIES",
+        top10Rank: 2,
+        match: "98% Match",
+        year: 2026,
+        maturity: "A",
+        duration: "2 Seasons",
+        genres: ["Crime", "Thriller", "Action"],
+        tags: "Adrenaline Rush, Slick, High-Stakes",
+        cast: "Vijay Varma, Sobhita Dhulipala, Kay Kay Menon, Jaideep Ahlawat",
+        creators: "Álex Pina, Raj & DK",
+        language: "Hindi",
+        progress: 42,
+        episodeInfo: 'S2:E3 "Monsoon Protocol"',
+        categories: ["continue", "top10", "trending", "action", "originals"],
+        synopsis: "Eight criminal masterminds lock themselves inside the Reserve Bullion Mint of Mumbai as a mastermind known as 'The Architect' manipulates the authorities from the shadows.",
+        backdrop: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "THE ARCHITECT: Every second the police hesitate, we print another forty crores.",
+          "COLABA: Perimeter breached on the east dock! Seal the titanium doors!",
+          "[Bella Ciao orchestral percussion intensifies]"
+        ],
+        episodes: [
+          { num: 1, title: "Episode 1: Red Masks", dur: "54m", desc: "The Architect recruits seven specialists with nothing to lose for an audacious infiltration of Mumbai's central bullion vault.", img: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=500&q=80" },
+          { num: 2, title: "Episode 2: Checkmate in Colaba", dur: "49m", desc: "Negotiations take an unexpected turn when an inside informant threatens to expose the tunnel escape blueprint.", img: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=500&q=80" },
+          { num: 3, title: "Episode 3: Monsoon Protocol", dur: "52m", desc: "Torrential rains flood the lower sub-levels, forcing the crew to improvise a daring underwater extraction.", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80" }
+        ]
+      },
+      {
+        id: 3,
+        title: "Sacred Games: Revival",
+        type: "tv",
+        badge: "SERIES",
+        top10Rank: 3,
+        match: "97% Match",
+        year: 2026,
+        maturity: "A",
+        duration: "3 Seasons",
+        genres: ["Crime", "Drama", "Mystery"],
+        tags: "Gritty, Critically Acclaimed, Dark",
+        cast: "Saif Ali Khan, Nawazuddin Siddiqui, Pankaj Tripathi, Radhika Apte",
+        creators: "Vikramaditya Motwane",
+        language: "Hindi",
+        progress: 85,
+        episodeInfo: 'S3:E8 "Ashwamedha"',
+        categories: ["continue", "top10", "originals"],
+        synopsis: "A link in their pasts leads an honest cop to a fugitive gang boss, whose cryptic warning spurs the officer on a quest to save Mumbai from cataclysm.",
+        backdrop: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "SARTAJ: Twenty-five days. That's all we have left to save this city.",
+          "GAITONDE: Sometimes you have to burn everything down to see what survives.",
+          "[Distant siren wails over Mumbai harbor]"
+        ],
+        episodes: [
+          { num: 1, title: "Aham Brahmasmi", dur: "51m", desc: "Inspector Sartaj Singh receives an anonymous tip that unearths a long-buried syndicate network.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" },
+          { num: 2, title: "Matsyanyaya", dur: "48m", desc: "As political tensions escalate, Sartaj decodes a cryptic audio tape recorded decades earlier.", img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=500&q=80" }
+        ]
+      },
+      {
+        id: 4,
+        title: "Dark Horizon",
+        type: "tv",
+        badge: "SERIES",
+        top10Rank: 4,
+        match: "96% Match",
+        year: 2025,
+        maturity: "U/A 16+",
+        duration: "3 Seasons",
+        genres: ["Sci-Fi", "Thriller", "Time Travel"],
+        tags: "Mind-Bending, Cerebral, Atmospheric",
+        cast: "Louis Hofmann, Lisa Vicari, Andreas Pietschmann",
+        creators: "Baran bo Odar, Jantje Friese",
+        language: "German",
+        progress: 24,
+        episodeInfo: 'S2:E4 "The Signal"',
+        categories: ["continue", "top10", "scifi", "originals"],
+        synopsis: "A missing child sets four families on a frantic hunt for answers as they unearth a mind-bending mystery that spans three generations.",
+        backdrop: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "JONAS: The question isn't where he is... it's when.",
+          "MARTHA: Everything is connected. Beginning is the end, and the end is the beginning.",
+          "[Ticking clock echoes in the rain-soaked forest]"
+        ],
+        episodes: [
+          { num: 1, title: "Secrets", dur: "52m", desc: "In 2019, a local boy's disappearance stokes fear in the residents of Winden, a small German town with a strange history.", img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=500&q=80" },
+          { num: 2, title: "Lies", dur: "45m", desc: "When a grim discovery leaves the town baffled, Ulrich seeks a search warrant for the power plant.", img: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=500&q=80" }
+        ]
+      },
+      {
+        id: 5,
+        title: "Cyberpunk: Neo-Bengaluru",
+        type: "movie",
+        badge: "FILM",
+        top10Rank: 5,
+        match: "98% Match",
+        year: 2026,
+        maturity: "U/A 16+",
+        duration: "2h 24m",
+        genres: ["Sci-Fi", "Action", "Cyberpunk"],
+        tags: "Visually Stunning, Fast-Paced, Futuristic",
+        cast: "Hrithik Roshan, Deepika Padukone, R. Madhavan",
+        creators: "Denis Villeneuve",
+        language: "Hindi",
+        categories: ["top10", "trending", "scifi", "action", "originals"],
+        synopsis: "In 2099 Neo-Bengaluru, a rogue memory courier steals an encrypted neural key that holds the secret to human consciousness—making her the prime target of megacorporations.",
+        backdrop: "https://images.unsplash.com/photo-1515630278258-407f66498911?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "KIRA: They own the skyline, but they don't own our memories.",
+          "AGENT DEV: Lock down Sector 9. She cannot reach the orbital uplink!",
+          "[Neon rain sizzles against chrome armor]"
+        ]
+      },
+      {
+        id: 6,
+        title: "Extraction: Kashmir",
+        type: "movie",
+        badge: "FILM",
+        top10Rank: 6,
+        match: "95% Match",
+        year: 2026,
+        maturity: "A",
+        duration: "2h 11m",
+        genres: ["Action", "Thriller", "Military"],
+        tags: "Relentless, Explosive, Gritty",
+        cast: "Chris Hemsworth, Randeep Hooda, Pankaj Tripathi",
+        creators: "Sam Hargrave",
+        language: "English",
+        categories: ["top10", "trending", "action", "originals"],
+        synopsis: "Back from the brink of death, black-ops mercenary Tyler Rake embarks on a perilous high-altitude mission across snowbound Himalayan ridges to rescue a kidnapped diplomat.",
+        backdrop: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "RAKE: Keep your head down and stay on my six!",
+          "NIK: Extraction chopper is three minutes out—hold the bridge!",
+          "[Automatic gunfire echoes across the canyon]"
+        ]
+      },
+      {
+        id: 7,
+        title: "Orbital Odyssey",
+        type: "movie",
+        badge: "FILM",
+        top10Rank: 7,
+        match: "96% Match",
+        year: 2025,
+        maturity: "U/A 13+",
+        duration: "2h 38m",
+        genres: ["Sci-Fi", "Adventure", "Drama"],
+        tags: "Epic, Emotional, Visually Breathtaking",
+        cast: "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
+        creators: "Christopher Nolan",
+        language: "English",
+        categories: ["top10", "scifi"],
+        synopsis: "When Earth's biosphere nears collapse, a team of astronauts travels through a newly discovered wormhole near Saturn to secure humanity's survival among distant stars.",
+        backdrop: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "COOPER: Mankind was born on Earth. It was never meant to die here.",
+          "TARS: Alignment locked. Preparing for gravitational slingshot.",
+          "[Pipe organ crescendo swells in deep space]"
+        ]
+      },
+      {
+        id: 8,
+        title: "The Railway Men: 1984",
+        type: "tv",
+        badge: "LIMITED SERIES",
+        top10Rank: 8,
+        match: "99% Match",
+        year: 2025,
+        maturity: "U/A 16+",
+        duration: "4 Episodes",
+        genres: ["Drama", "History", "Thriller"],
+        tags: "Heroic, Heartfelt, Based on True Events",
+        cast: "R. Madhavan, Kay Kay Menon, Divyenndu, Babil Khan",
+        creators: "Shiv Rawail",
+        language: "Hindi",
+        categories: ["top10", "trending", "originals"],
+        synopsis: "After a deadly gas leak engulfs Bhopal, courageous railway workers risk their own lives to rescue thousands of trapped passengers.",
+        backdrop: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "STATION MASTER: We don't leave a single soul behind on this platform.",
+          "LOCO PILOT: Clear the main line—we're taking this train out now!",
+          "[Steam whistle blasts through the night]"
+        ],
+        episodes: [
+          { num: 1, title: "Episode 1: Night Shift", dur: "59m", desc: "A routine winter night at Bhopal Junction turns into an unthinkable race against an invisible toxic cloud.", img: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=500&q=80" },
+          { num: 2, title: "Episode 2: The Express", dur: "62m", desc: "With communications severed, station workers attempt to divert an incoming passenger express before it enters the station.", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80" }
+        ]
+      },
+      {
+        id: 9,
+        title: "Apex Velocity",
+        type: "movie",
+        badge: "FILM",
+        top10Rank: 9,
+        match: "93% Match",
+        year: 2026,
+        maturity: "U/A 13+",
+        duration: "2h 06m",
+        genres: ["Action", "Sports", "Drama"],
+        tags: "High-Octane, Adrenaline Rush, Inspiring",
+        cast: "Brad Pitt, Damson Idris, Javier Bardem",
+        creators: "Joseph Kosinski",
+        language: "English",
+        categories: ["top10", "action"],
+        synopsis: "A veteran Formula driver comes out of retirement to mentor a fearless rookie prodigy against the world's fastest constructors.",
+        backdrop: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "PIT WALL: Box this lap for soft compounds—rain is five minutes out.",
+          "DRIVER: Copy that. Passing on the outside at Turn 1!",
+          "[V6 hybrid engine screams at 15,000 RPM]"
+        ]
+      },
+      {
+        id: 10,
+        title: "Royal Bloodlines",
+        type: "tv",
+        badge: "SERIES",
+        top10Rank: 10,
+        match: "94% Match",
+        year: 2025,
+        maturity: "U/A 16+",
+        duration: "2 Seasons",
+        genres: ["Drama", "History", "Romance"],
+        tags: "Opulent, Dramatic, Emotional",
+        cast: "Aditi Rao Hydari, Manisha Koirala, Sonakshi Sinha",
+        creators: "Sanjay Leela Bhansali",
+        language: "Hindi",
+        categories: ["top10", "originals"],
+        synopsis: "Behind gilded palace doors during the Indian independence movement, rival matriarchs clash over succession, loyalty, and forbidden love.",
+        backdrop: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "MAHARANI: Crowns are forged in fire, never gifted in peace.",
+          "[Classical sitar and tabla echo across the courtyard]"
+        ],
+        episodes: [
+          { num: 1, title: "The Gilded Courtyard", dur: "64m", desc: "A grand royal banquet masks simmering betrayals inside the palace.", img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=500&q=80" }
+        ]
+      },
+      {
+        id: 11,
+        title: "Quantum Paradox",
+        type: "movie",
+        badge: "FILM",
+        match: "95% Match",
+        year: 2026,
+        maturity: "U/A 13+",
+        duration: "2h 15m",
+        genres: ["Sci-Fi", "Thriller", "Mystery"],
+        tags: "Mind-Bending, Clever, Tense",
+        cast: "Cillian Murphy, Rebecca Ferguson, Benedict Cumberbatch",
+        creators: "Alex Garland",
+        language: "English",
+        categories: ["trending", "scifi", "action"],
+        synopsis: "When a particle accelerator triggers a 12-hour temporal loop in Geneva, two physicists must solve a sabotage plot before reality fractures permanently.",
+        backdrop: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "DR. VANCE: Every reset leaves a quantum echo. Look at the timestamps.",
+          "[Collider magnetic hum builds]"
+        ]
+      },
+      {
+        id: 12,
+        title: "Nightcrawler Tokyo",
+        type: "movie",
+        badge: "FILM",
+        match: "92% Match",
+        year: 2025,
+        maturity: "A",
+        duration: "2h 02m",
+        genres: ["Action", "Crime", "Noir"],
+        tags: "Stylish, Martial Arts, Neon Noir",
+        cast: "Keanu Reeves, Hiroyuki Sanada, Rina Sawayama",
+        creators: "Chad Stahelski",
+        language: "Japanese",
+        categories: ["trending", "action"],
+        synopsis: "In rain-slicked Shinjuku, a retired syndicate enforcer crosses blades with an international underworld guild to protect his estranged daughter.",
+        backdrop: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1600&q=80",
+        poster: "https://images.unsplash.com/photo-1515630278258-407f66498911?auto=format&fit=crop&w=700&q=80",
+        subtitles: [
+          "KENJI: Tonight, the old rules of the guild end.",
+          "[Steel katana rings in the neon alley]"
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 3. APPLICATION STATE
+    // =========================================================================
+    let appState = {
+      activeProfile: PROFILES[0],
+      manageMode: false,
+      myList: [1, 2, 5],
+      likedIds: [1],
+      navFilter: 'all',
+      billboardIdx: 0,
+      billboardMuted: true,
+      hoveredItem: null,
+      hoverOpenTimer: null,
+      hoverCloseTimer: null,
+      modalItem: null,
+      player: {
+        item: null,
+        playing: false,
+        percent: 22,
+        totalSeconds: 2680, // 44m 40s
+        muted: false,
+        volume: 85,
+        speed: 1,
+        subtitleLang: 'English',
+        interval: null
+      }
+    };
+
+    // =========================================================================
+    // 4. WEB AUDIO API SYNTHESIZED NETFLIX "TA-DUM" SOUND
+    // =========================================================================
+    function playNetflixTaDumSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+
+        // First deep timpani hit ("Ta-")
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(110, ctx.currentTime);
+        osc1.frequency.exponentialRampToValueAtTime(55, ctx.currentTime + 0.25);
+        gain1.gain.setValueAtTime(0.45, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(ctx.currentTime);
+        osc1.stop(ctx.currentTime + 0.36);
+
+        // Second resonant bass + harmonic bloom ("-DUMMM")
+        const osc2 = ctx.createOscillator();
+        const oscHarmonic = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(73.42, ctx.currentTime + 0.22); // D2
+        osc2.frequency.exponentialRampToValueAtTime(36.71, ctx.currentTime + 1.8); // D1 sub-bass
+
+        oscHarmonic.type = 'sawtooth';
+        oscHarmonic.frequency.setValueAtTime(146.83, ctx.currentTime + 0.22);
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(420, ctx.currentTime + 0.22);
+        filter.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 1.9);
+
+        gain2.gain.setValueAtTime(0.001, ctx.currentTime + 0.22);
+        gain2.gain.linearRampToValueAtTime(0.55, ctx.currentTime + 0.28);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.0);
+
+        osc2.connect(gain2);
+        oscHarmonic.connect(filter);
+        filter.connect(gain2);
+        gain2.connect(ctx.destination);
+
+        osc2.start(ctx.currentTime + 0.22);
+        oscHarmonic.start(ctx.currentTime + 0.22);
+        osc2.stop(ctx.currentTime + 2.05);
+        oscHarmonic.stop(ctx.currentTime + 2.05);
+      } catch (err) {
+        // Silently ignore if browser blocks audio before gesture
+      }
+    }
+
+    // =========================================================================
+    // 5. INITIALIZATION & PROFILE GATE LOGIC
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProfilesGrid();
+      syncHeaderProfileAvatar();
+      renderBillboard(CATALOG[0]);
+      renderAllRows();
+      lucide.createIcons();
+
+      // Navbar scroll background transition
+      window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-navbar');
+        if (window.scrollY > 25) {
+          nav.classList.add('bg-[#141414]');
+          nav.classList.remove('netflix-nav-top');
+        } else {
+          nav.classList.remove('bg-[#141414]');
+          nav.classList.add('netflix-nav-top');
+        }
+      });
+
+      // Global click outside popovers
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#notif-popover') && !e.target.closest('[aria-label="Notifications"]')) {
+          document.getElementById('notif-popover').classList.add('hidden');
+        }
+        if (!e.target.closest('#account-dropdown') && !e.target.closest('#header-profile-avatar')) {
+          document.getElementById('account-dropdown').classList.add('hidden');
+          document.getElementById('header-caret').classList.remove('rotate-180');
+        }
+        if (!e.target.closest('#mobile-browse-dropdown') && !e.target.closest('#mobile-browse-label')) {
+          document.getElementById('mobile-browse-dropdown').classList.add('hidden');
+        }
+      });
+
+      // Escape & Spacebar shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeDetailModal();
+          closeTheaterPlayer();
+          hideHoverPreviewCard();
+        }
+        if (e.key === ' ' && !document.getElementById('theater-player').classList.contains('hidden')) {
+          e.preventDefault();
+          toggleTheaterPlay();
+        }
+      });
+    });
+
+    function renderProfilesGrid() {
+      const grid = document.getElementById('profile-cards-grid');
+      const heading = document.getElementById('profile-gate-heading');
+      const manageBtn = document.getElementById('manage-profiles-btn');
+
+      heading.textContent = appState.manageMode ? 'Manage Profiles:' : "Who's watching?";
+      manageBtn.textContent = appState.manageMode ? 'Done' : 'Manage Profiles';
+      if (appState.manageMode) {
+        manageBtn.classList.add('bg-white', 'text-black', 'font-bold', 'border-white');
+        manageBtn.classList.remove('text-[#808080]');
+      } else {
+        manageBtn.classList.remove('bg-white', 'text-black', 'font-bold', 'border-white');
+        manageBtn.classList.add('text-[#808080]');
+      }
+
+      grid.innerHTML = PROFILES.map(profile => `
+        <div class="flex flex-col items-center gap-3 w-24 sm:w-36">
+          <button onclick="onProfileClick('${profile.id}')" class="relative w-24 h-24 sm:w-36 sm:h-36 rounded-[4px] overflow-hidden ring-[3px] ring-transparent hover:ring-white transition-all duration-200 group focus:outline-none">
+            ${AVATAR_SVGS[profile.theme]}
+            ${appState.manageMode ? `
+              <div class="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center text-white">
+                  <i data-lucide="pencil" class="w-5 h-5"></i>
+                </div>
+              </div>
+            ` : ''}
+          </button>
+
+          ${appState.manageMode ? `
+            <input 
+              type="text" 
+              value="${profile.name}" 
+              onchange="renameProfile('${profile.id}', this.value)"
+              class="w-full bg-[#333] text-white text-center text-sm sm:text-base px-2 py-1 rounded border border-white/30 focus:outline-none focus:border-white"
+            />
+          ` : `
+            <span class="text-[#808080] hover:text-white text-sm sm:text-lg font-normal transition cursor-pointer" onclick="onProfileClick('${profile.id}')">
+              ${profile.name}
+            </span>
+          `}
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function toggleManageProfilesMode() {
+      appState.manageMode = !appState.manageMode;
+      renderProfilesGrid();
+    }
+
+    function renameProfile(id, newName) {
+      const p = PROFILES.find(item => item.id === id);
+      if (p && newName.trim()) {
+        p.name = newName.trim();
+        syncHeaderProfileAvatar();
+        renderAllRows();
+      }
+    }
+
+    let introTimeout;
+    function onProfileClick(profileId) {
+      if (appState.manageMode) {
+        showToast('Edit name directly below the avatar, then click Done');
+        return;
+      }
+
+      const chosen = PROFILES.find(p => p.id === profileId);
+      if (chosen) {
+        appState.activeProfile = chosen;
+        syncHeaderProfileAvatar();
+        renderAllRows();
+      }
+
+      // Hide Profile Gate & Trigger Netflix Red Ribbon + Ta-Dum Intro
+      const gate = document.getElementById('profile-gate');
+      gate.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => gate.classList.add('hidden'), 300);
+
+      triggerNetflixIntro();
+    }
+
+    function triggerNetflixIntro() {
+      const overlay = document.getElementById('netflix-intro-overlay');
+      const emblem = document.getElementById('intro-emblem');
+
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+
+      // Reset CSS animation cleanly
+      emblem.classList.remove('animate-netflix-intro');
+      void emblem.offsetWidth;
+      emblem.classList.add('animate-netflix-intro');
+
+      playNetflixTaDumSound();
+
+      clearTimeout(introTimeout);
+      introTimeout = setTimeout(() => {
+        skipIntroAnimation();
+      }, 2250);
+    }
+
+    function skipIntroAnimation() {
+      clearTimeout(introTimeout);
+      const overlay = document.getElementById('netflix-intro-overlay');
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+    }
+
+    function returnToProfileGate(manage = false) {
+      document.getElementById('account-dropdown').classList.add('hidden');
+      appState.manageMode = manage;
+      renderProfilesGrid();
+      const gate = document.getElementById('profile-gate');
+      gate.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        gate.classList.remove('opacity-0', 'pointer-events-none');
+      });
+    }
+
+    function switchToKidsProfile() {
+      onProfileClick('p5');
+    }
+
+    function syncHeaderProfileAvatar() {
+      const avatarBox = document.getElementById('header-profile-avatar');
+      avatarBox.innerHTML = AVATAR_SVGS[appState.activeProfile.theme];
+
+      const dropdownProfiles = document.getElementById('account-dropdown-profiles');
+      dropdownProfiles.innerHTML = PROFILES.filter(p => p.id !== appState.activeProfile.id).map(p => `
+        <button onclick="onProfileClick('${p.id}'); document.getElementById('account-dropdown').classList.add('hidden')" class="w-full text-left px-3.5 py-2 text-gray-200 hover:underline flex items-center gap-3">
+          <span class="w-7 h-7 rounded overflow-hidden shrink-0">${AVATAR_SVGS[p.theme]}</span>
+          <span>${p.name}</span>
+        </button>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 6. BILLBOARD HERO RENDERING & CONTROLS
+    // =========================================================================
+    function renderBillboard(item) {
+      document.getElementById('billboard-bg').style.backgroundImage = `url('${item.backdrop}')`;
+      document.getElementById('billboard-type-label').textContent = item.badge;
+      document.getElementById('billboard-title').textContent = item.title;
+      document.getElementById('billboard-synopsis').textContent = item.synopsis;
+      document.getElementById('billboard-maturity').textContent = item.maturity;
+
+      const top10Row = document.getElementById('billboard-top10-row');
+      if (item.top10Rank) {
+        top10Row.classList.remove('hidden');
+        document.getElementById('billboard-rank-text').textContent = `#${item.top10Rank} in ${item.type === 'tv' ? 'TV Shows' : 'Movies'} Today`;
+      } else {
+        top10Row.classList.add('hidden');
+      }
+
+      document.getElementById('billboard-play-btn').onclick = () => openTheaterPlayer(item);
+      document.getElementById('billboard-info-btn').onclick = () => openDetailModal(item);
+    }
+
+    function cycleBillboardFeatured() {
+      appState.billboardIdx = (appState.billboardIdx + 1) % 6;
+      renderBillboard(CATALOG[appState.billboardIdx]);
+    }
+
+    function toggleBillboardMute() {
+      appState.billboardMuted = !appState.billboardMuted;
+      const btn = document.getElementById('billboard-mute-btn');
+      btn.innerHTML = `<i data-lucide="${appState.billboardMuted ? 'volume-x' : 'volume-2'}" class="w-4 h-4 sm:w-5 sm:h-5"></i>`;
+      lucide.createIcons();
+      showToast(appState.billboardMuted ? 'Preview audio muted' : 'Ambient preview audio enabled');
+    }
+
+    // =========================================================================
+    // 7. SIGNATURE NETFLIX ROWS, TOP 10 SVG RANKS & HOVER PREVIEW CARDS
+    // =========================================================================
+    function getFilteredItems() {
+      let pool = [...CATALOG];
+      if (appState.activeProfile.isKids) {
+        pool = pool.filter(i => i.maturity !== 'A');
+      }
+      if (appState.navFilter === 'tv') return pool.filter(i => i.type === 'tv');
+      if (appState.navFilter === 'movie') return pool.filter(i => i.type === 'movie');
+      if (appState.navFilter === 'popular') return pool.filter(i => i.year === 2026);
+      if (appState.navFilter === 'mylist') return pool.filter(i => appState.myList.includes(i.id));
+      if (appState.navFilter === 'languages') return pool.filter(i => i.language !== 'English');
+      return pool;
+    }
+
+    function renderAllRows() {
+      const wrapper = document.getElementById('rows-wrapper');
+      const items = getFilteredItems();
+
+      // Dedicated Grid if user selects "My List" or "Browse by Languages"
+      if (appState.navFilter === 'mylist' || appState.navFilter === 'languages') {
+        const headingTitle = appState.navFilter === 'mylist' ? 'My List' : 'Browse by Languages (Hindi, German, Japanese)';
+        wrapper.innerHTML = `
+          <section class="pt-28 px-4 sm:px-8 lg:px-14">
+            <h2 class="text-2xl sm:text-3xl font-medium text-white mb-8">${headingTitle}</h2>
+            ${items.length === 0 ? `
+              <div class="py-20 text-center text-gray-400">
+                <p class="text-lg">You haven't added any titles to your list yet.</p>
+                <button onclick="setNavCategory('all')" class="mt-4 px-5 py-2 bg-white text-black font-bold rounded text-sm">Browse Catalog</button>
+              </div>
+            ` : `
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-3 gap-y-8">
+                ${items.map(item => buildLandscapeTileHTML(item, false)).join('')}
+              </div>
+            `}
+          </section>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      const continueItems = items.filter(i => i.categories.includes('continue'));
+      const top10Items = items.filter(i => i.top10Rank).sort((a, b) => a.top10Rank - b.top10Rank);
+      const trendingItems = items.filter(i => i.categories.includes('trending'));
+      const actionItems = items.filter(i => i.categories.includes('action'));
+      const scifiItems = items.filter(i => i.categories.includes('scifi'));
+      const originalsItems = items.filter(i => i.categories.includes('originals'));
+      const myListItems = CATALOG.filter(i => appState.myList.includes(i.id));
+
+      const rowDefinitions = [
+        ...(continueItems.length && appState.navFilter === 'all' ? [{
+          id: 'row-continue',
+          title: `Continue Watching for ${appState.activeProfile.name}`,
+          items: continueItems,
+          variant: 'continue'
+        }] : []),
+        {
+          id: 'row-top10',
+          title: `Top 10 ${appState.navFilter === 'movie' ? 'Movies' : 'TV Shows'} in India Today`,
+          items: top10Items,
+          variant: 'top10'
+        },
+        {
+          id: 'row-trending',
+          title: 'Trending Now',
+          items: trendingItems,
+          variant: 'standard'
+        },
+        ...(myListItems.length && appState.navFilter === 'all' ? [{
+          id: 'row-mylist',
+          title: 'My List',
+          items: myListItems,
+          variant: 'standard'
+        }] : []),
+        {
+          id: 'row-originals',
+          title: 'Only on Netflix',
+          items: originalsItems,
+          variant: 'tall'
+        },
+        {
+          id: 'row-action',
+          title: 'Blockbuster Indian & International Action',
+          items: actionItems,
+          variant: 'standard'
+        },
+        {
+          id: 'row-scifi',
+          title: 'Critically Acclaimed Sci-Fi & Thrillers',
+          items: scifiItems,
+          variant: 'standard'
+        }
+      ].filter(r => r.items.length > 0);
+
+      wrapper.innerHTML = rowDefinitions.map(row => `
+        <section class="relative group/slider">
+          <!-- Row Header + Signature Netflix Page Indicator Bars -->
+          <div class="px-4 sm:px-8 lg:px-14 mb-2.5 flex items-end justify-between">
+            <h2 class="text-base sm:text-xl lg:text-[1.35rem] font-semibold text-[#e5e5e5] hover:text-white transition flex items-center gap-2 cursor-pointer">
+              <span>${row.title}</span>
+              <span class="text-xs text-[#54b9c5] font-bold opacity-0 group-hover/slider:opacity-100 transition-opacity duration-300">Explore All &rsaquo;</span>
+            </h2>
+
+            <!-- Netflix Pagination Indicator Bars (Visible on Row Hover) -->
+            <div class="hidden sm:flex items-center gap-1 opacity-0 group-hover/slider:opacity-100 transition-opacity duration-200">
+              <span class="w-3.5 h-[2px] bg-white"></span>
+              <span class="w-3.5 h-[2px] bg-white/30"></span>
+              <span class="w-3.5 h-[2px] bg-white/30"></span>
+            </div>
+          </div>
+
+          <!-- Slider Track + Full-Height Translucent Handles -->
+          <div class="relative">
+            <button 
+              onclick="slideRow('${row.id}', -1)" 
+              aria-label="Previous titles"
+              class="hidden md:flex items-center justify-center absolute left-0 top-0 bottom-0 z-30 w-12 lg:w-14 bg-black/55 hover:bg-black/80 text-white opacity-0 group-hover/slider:opacity-100 transition-opacity duration-200 rounded-r-[4px]">
+              <i data-lucide="chevron-left" class="w-9 h-9"></i>
+            </button>
+
+            <div id="${row.id}" class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar scroll-smooth px-4 sm:px-8 lg:px-14 py-1">
+              ${row.items.map(item => {
+                if (row.variant === 'top10') return buildTop10TileHTML(item);
+                if (row.variant === 'tall') return buildTallOriginalTileHTML(item);
+                return buildLandscapeTileHTML(item, row.variant === 'continue');
+              }).join('')}
+            </div>
+
+            <button 
+              onclick="slideRow('${row.id}', 1)" 
+              aria-label="Next titles"
+              class="hidden md:flex items-center justify-center absolute right-0 top-0 bottom-0 z-30 w-12 lg:w-14 bg-black/55 hover:bg-black/80 text-white opacity-0 group-hover/slider:opacity-100 transition-opacity duration-200 rounded-l-[4px]">
+              <i data-lucide="chevron-right" class="w-9 h-9"></i>
+            </button>
+          </div>
+        </section>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // Standard Landscape Thumbnail (With optional Continue Watching red progress bar)
+    function buildLandscapeTileHTML(item, showProgress) {
+      return `
+        <div 
+          onmouseenter="scheduleHoverPreview(event, ${item.id})"
+          onmouseleave="cancelHoverPreviewOpen()"
+          onclick="openDetailById(${item.id})"
+          class="thumb-tile relative shrink-0 w-44 sm:w-56 lg:w-[250px] cursor-pointer group select-none"
+        >
+          <div class="relative w-full aspect-video rounded-[4px] overflow-hidden bg-zinc-900">
+            <img 
+              src="${item.backdrop}" 
+              alt="${item.title}" 
+              loading="lazy"
+              onerror="this.style.opacity='0'"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/15"></div>
+            
+            <!-- Red N Corner Emblem -->
+            <span class="absolute top-2 left-2 text-[#E50914] font-display text-lg leading-none drop-shadow">N</span>
+
+            <!-- Title Label -->
+            <div class="absolute bottom-2 left-2.5 right-2.5">
+              <p class="font-display text-lg sm:text-xl text-white tracking-wide leading-none truncate drop-shadow">${item.title}</p>
+            </div>
+          </div>
+
+          ${showProgress ? `
+            <div class="mt-2 px-2">
+              <div class="w-full h-[3px] bg-[#4d4d4d] rounded-full overflow-hidden">
+                <div class="h-full bg-[#E50914]" style="width: ${item.progress || 45}%;"></div>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // Top 10 Tile with Giant Hollow/Outlined SVG Rank Numbers Overlapping Left Edge
+    function buildTop10TileHTML(item) {
+      return `
+        <div 
+          onmouseenter="scheduleHoverPreview(event, ${item.id})"
+          onmouseleave="cancelHoverPreviewOpen()"
+          onclick="openDetailById(${item.id})"
+          class="thumb-tile relative shrink-0 flex items-center w-44 sm:w-56 lg:w-[255px] h-40 sm:h-48 lg:h-52 cursor-pointer select-none"
+        >
+          <!-- Giant Outlined SVG Rank Number -->
+          <svg viewBox="0 0 110 150" class="w-24 sm:w-28 lg:w-32 h-full shrink-0 -mr-5 sm:-mr-6 z-0 overflow-visible">
+            <text 
+              x="50%" 
+              y="132" 
+              text-anchor="middle" 
+              fill="#141414" 
+              stroke="#595959" 
+              stroke-width="4.5" 
+              font-family="Anton, Bebas Neue, sans-serif" 
+              font-size="146"
+              letter-spacing="-6"
+            >${item.top10Rank}</text>
+          </svg>
+
+          <!-- Vertical Poster Card -->
+          <div class="relative z-10 w-28 sm:w-32 lg:w-36 h-36 sm:h-44 lg:h-48 rounded-[4px] overflow-hidden bg-zinc-900 shadow-xl">
+            <img 
+              src="${item.poster}" 
+              alt="${item.title}" 
+              loading="lazy"
+              onerror="this.style.opacity='0'"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex flex-col justify-end p-2">
+              <span class="bg-[#E50914] text-white text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-[2px] w-fit mb-1">Recently Added</span>
+              <p class="font-display text-base text-white leading-none truncate">${item.title}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Taller Vertical "Only on Netflix" Poster Card
+    function buildTallOriginalTileHTML(item) {
+      return `
+        <div 
+          onmouseenter="scheduleHoverPreview(event, ${item.id})"
+          onmouseleave="cancelHoverPreviewOpen()"
+          onclick="openDetailById(${item.id})"
+          class="thumb-tile relative shrink-0 w-36 sm:w-44 lg:w-[215px] h-56 sm:h-72 lg:h-[325px] rounded-[4px] overflow-hidden bg-zinc-900 cursor-pointer select-none"
+        >
+          <img 
+            src="${item.poster}" 
+            alt="${item.title}" 
+            loading="lazy"
+            onerror="this.style.opacity='0'"
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/25 flex flex-col justify-between p-3">
+            <div class="flex items-center gap-1">
+              <span class="text-[#E50914] font-display text-2xl leading-none drop-shadow">N</span>
+              <span class="text-[9px] font-bold tracking-[0.22em] text-gray-200 uppercase">ORIGINAL</span>
+            </div>
+
+            <div>
+              <h3 class="font-display text-2xl sm:text-3xl text-white tracking-wide leading-none drop-shadow-md">${item.title}</h3>
+              <p class="text-[11px] text-[#46d369] font-semibold mt-1">${item.match}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function slideRow(rowId, direction) {
+      const track = document.getElementById(rowId);
+      if (!track) return;
+      const distance = track.clientWidth * 0.82;
+      track.scrollBy({ left: direction * distance, behavior: 'smooth' });
+    }
+
+    // =========================================================================
+    // 8. FLOATING HOVER-EXPAND MINI-MODAL PREVIEW LOGIC (DESKTOP)
+    // =========================================================================
+    function scheduleHoverPreview(event, itemId) {
+      // Disable hover expansion on touch/mobile viewports
+      if (window.innerWidth < 768) return;
+
+      clearTimeout(appState.hoverOpenTimer);
+      clearTimeout(appState.hoverCloseTimer);
+
+      const targetEl = event.currentTarget;
+      const rect = targetEl.getBoundingClientRect();
+
+      appState.hoverOpenTimer = setTimeout(() => {
+        showHoverPreviewCard(itemId, rect);
+      }, 340);
+    }
+
+    function cancelHoverPreviewOpen() {
+      clearTimeout(appState.hoverOpenTimer);
+      scheduleHoverCardClose();
+    }
+
+    function scheduleHoverCardClose() {
+      clearTimeout(appState.hoverCloseTimer);
+      appState.hoverCloseTimer = setTimeout(() => {
+        hideHoverPreviewCard();
+      }, 180);
+    }
+
+    function cancelHoverCardClose() {
+      clearTimeout(appState.hoverCloseTimer);
+    }
+
+    function showHoverPreviewCard(itemId, sourceRect) {
+      const item = CATALOG.find(i => i.id === itemId);
+      if (!item) return;
+      appState.hoveredItem = item;
+
+      const card = document.getElementById('hover-preview-card');
+      const cardWidth = 335;
+      const cardHeight = 325;
+
+      // Center over hovered tile while keeping within screen viewport bounds
+      let left = sourceRect.left + (sourceRect.width / 2) - (cardWidth / 2);
+      left = Math.max(20, Math.min(window.innerWidth - cardWidth - 20, left));
+
+      let top = sourceRect.top - 36;
+      top = Math.max(76, Math.min(window.innerHeight - cardHeight - 20, top));
+
+      card.style.left = `${left}px`;
+      card.style.top = `${top}px`;
+
+      document.getElementById('hpc-media').style.backgroundImage = `url('${item.backdrop}')`;
+      document.getElementById('hpc-title').textContent = item.title;
+      document.getElementById('hpc-match').textContent = item.match;
+      document.getElementById('hpc-maturity').textContent = item.maturity;
+      document.getElementById('hpc-duration').textContent = item.duration;
+
+      document.getElementById('hpc-genres').innerHTML = item.genres
+        .map((g, idx) => `${idx > 0 ? '<span class="text-gray-500">•</span>' : ''}<span>${g}</span>`)
+        .join('');
+
+      syncHoverCardButtons(item.id);
+
+      card.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function hideHoverPreviewCard() {
+      const card = document.getElementById('hover-preview-card');
+      card.classList.add('hidden');
+    }
+
+    function syncHoverCardButtons(itemId) {
+      const inList = appState.myList.includes(itemId);
+      const listBtn = document.getElementById('hpc-mylist-btn');
+      listBtn.innerHTML = `<i data-lucide="${inList ? 'check' : 'plus'}" class="w-4 h-4"></i>`;
+      listBtn.title = inList ? 'Remove from My List' : 'Add to My List';
+
+      const isLiked = appState.likedIds.includes(itemId);
+      const likeBtn = document.getElementById('hpc-like-btn');
+      if (isLiked) {
+        likeBtn.classList.add('border-white', 'bg-white/20');
+      } else {
+        likeBtn.classList.remove('border-white', 'bg-white/20');
+      }
+      lucide.createIcons();
+    }
+
+    function playFromHoverCard() {
+      if (!appState.hoveredItem) return;
+      const item = appState.hoveredItem;
+      hideHoverPreviewCard();
+      openTheaterPlayer(item);
+    }
+
+    function openDetailFromHoverCard() {
+      if (!appState.hoveredItem) return;
+      const item = appState.hoveredItem;
+      hideHoverPreviewCard();
+      openDetailModal(item);
+    }
+
+    function toggleMyListFromHoverCard() {
+      if (!appState.hoveredItem) return;
+      toggleMyList(appState.hoveredItem.id);
+      syncHoverCardButtons(appState.hoveredItem.id);
+    }
+
+    function toggleLikeFromHoverCard() {
+      if (!appState.hoveredItem) return;
+      const id = appState.hoveredItem.id;
+      const idx = appState.likedIds.indexOf(id);
+      if (idx > -1) {
+        appState.likedIds.splice(idx, 1);
+        showToast('Rating removed');
+      } else {
+        appState.likedIds.push(id);
+        showToast('Rated: I like this');
+      }
+      syncHoverCardButtons(id);
+    }
+
+    function rateTitle(label) {
+      showToast(`Rated: ${label}`);
+    }
+
+    function toggleHoverCardMute(btn) {
+      const icon = btn.querySelector('svg');
+      const isMuted = icon && icon.getAttribute('data-lucide') === 'volume-x';
+      btn.innerHTML = `<i data-lucide="${isMuted ? 'volume-2' : 'volume-x'}" class="w-3.5 h-3.5"></i>`;
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // 9. NAVIGATION FILTERING & EXPANDABLE SEARCH
+    // =========================================================================
+    function setNavCategory(category, tabEl, mobileLabel) {
+      appState.navFilter = category;
+      clearSearchInput(false);
+      hideHoverPreviewCard();
+
+      document.querySelectorAll('.nav-tab').forEach(el => {
+        el.classList.remove('text-white', 'font-semibold');
+        el.classList.add('text-[#e5e5e5]');
+      });
+      if (tabEl) {
+        tabEl.classList.add('text-white', 'font-semibold');
+        tabEl.classList.remove('text-[#e5e5e5]');
+      }
+      if (mobileLabel) {
+        document.getElementById('mobile-browse-label').textContent = mobileLabel;
+        document.getElementById('mobile-browse-dropdown').classList.add('hidden');
+      }
+
+      const billboard = document.getElementById('billboard-section');
+      const rowsWrapper = document.getElementById('rows-wrapper');
+
+      if (category === 'mylist' || category === 'languages') {
+        billboard.classList.add('hidden');
+        rowsWrapper.classList.remove('-mt-16', 'sm:-mt-28', 'lg:-mt-36');
+      } else {
+        billboard.classList.remove('hidden');
+        rowsWrapper.classList.add('-mt-16', 'sm:-mt-28', 'lg:-mt-36');
+        const filtered = getFilteredItems();
+        if (filtered.length > 0) renderBillboard(filtered[0]);
+      }
+
+      renderAllRows();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetAllFilters(e) {
+      if (e) e.preventDefault();
+      const homeTab = document.querySelector('.nav-tab');
+      setNavCategory('all', homeTab, 'Home');
+    }
+
+    function expandSearchBox() {
+      document.getElementById('search-toggle-btn').classList.add('hidden');
+      const container = document.getElementById('search-input-container');
+      container.classList.remove('hidden');
+      container.classList.add('flex');
+      document.getElementById('netflix-search-input').focus();
+    }
+
+    function handleSearchBlur() {
+      const input = document.getElementById('netflix-search-input');
+      if (!input.value.trim()) {
+        document.getElementById('search-input-container').classList.add('hidden');
+        document.getElementById('search-input-container').classList.remove('flex');
+        document.getElementById('search-toggle-btn').classList.remove('hidden');
+      }
+    }
+
+    function onSearchInput(val) {
+      const q = val.trim().toLowerCase();
+      const clearX = document.getElementById('search-clear-x');
+      const browseContainer = document.getElementById('browse-container');
+      const searchView = document.getElementById('search-view');
+      const grid = document.getElementById('search-grid');
+      const empty = document.getElementById('search-empty');
+
+      if (!q) {
+        clearX.classList.add('hidden');
+        searchView.classList.add('hidden');
+        browseContainer.classList.remove('hidden');
+        return;
+      }
+
+      clearX.classList.remove('hidden');
+      browseContainer.classList.add('hidden');
+      searchView.classList.remove('hidden');
+      document.getElementById('search-active-term').textContent = val;
+
+      const matches = CATALOG.filter(item =>
+        item.title.toLowerCase().includes(q) ||
+        item.genres.some(g => g.toLowerCase().includes(q)) ||
+        item.cast.toLowerCase().includes(q) ||
+        item.language.toLowerCase().includes(q)
+      );
+
+      if (matches.length === 0) {
+        grid.innerHTML = '';
+        document.getElementById('search-empty-term').textContent = val;
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        grid.innerHTML = matches.map(item => `
+          <div onclick="openDetailById(${item.id})" class="thumb-tile cursor-pointer group">
+            <div class="relative aspect-video rounded-[4px] overflow-hidden bg-zinc-900">
+              <img src="${item.backdrop}" alt="${item.title}" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end p-2.5">
+                <p class="font-display text-lg text-white leading-none truncate">${item.title}</p>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function clearSearchInput(resetVal = true) {
+      if (resetVal) {
+        document.getElementById('netflix-search-input').value = '';
+        handleSearchBlur();
+      }
+      document.getElementById('search-clear-x').classList.add('hidden');
+      document.getElementById('search-view').classList.add('hidden');
+      document.getElementById('browse-container').classList.remove('hidden');
+    }
+
+    // =========================================================================
+    // 10. MY LIST STATE MANAGEMENT
+    // =========================================================================
+    function toggleMyList(itemId) {
+      const idx = appState.myList.indexOf(itemId);
+      const item = CATALOG.find(i => i.id === itemId);
+      if (idx > -1) {
+        appState.myList.splice(idx, 1);
+        showToast(`Removed "${item.title}" from My List`);
+      } else {
+        appState.myList.push(itemId);
+        showToast(`Added "${item.title}" to My List`);
+      }
+
+      if (appState.modalItem && appState.modalItem.id === itemId) {
+        syncDetailMyListButton(itemId);
+      }
+
+      renderAllRows();
+    }
+
+    // =========================================================================
+    // 11. AUTHENTIC NETFLIX DETAIL PREVIEW MODAL
+    // =========================================================================
+    function openDetailById(id) {
+      const item = CATALOG.find(i => i.id === id);
+      if (item) openDetailModal(item);
+    }
+
+    function openDetailModal(item) {
+      appState.modalItem = item;
+      hideHoverPreviewCard();
+
+      document.getElementById('dm-banner').style.backgroundImage = `url('${item.backdrop}')`;
+      document.getElementById('dm-badge').textContent = item.badge;
+      document.getElementById('dm-title').textContent = item.title;
+      document.getElementById('dm-match').textContent = item.match;
+      document.getElementById('dm-year').textContent = item.year;
+      document.getElementById('dm-maturity').textContent = item.maturity;
+      document.getElementById('dm-duration').textContent = item.duration;
+      document.getElementById('dm-synopsis').textContent = item.synopsis;
+      document.getElementById('dm-cast').textContent = item.cast;
+      document.getElementById('dm-genres').textContent = item.genres.join(', ');
+      document.getElementById('dm-tags').textContent = item.tags;
+
+      // About Section
+      document.getElementById('dm-about-title').textContent = item.title;
+      document.getElementById('dm-creators').textContent = item.creators;
+      document.getElementById('dm-about-cast').textContent = item.cast;
+      document.getElementById('dm-about-genres').textContent = item.genres.join(', ');
+      document.getElementById('dm-about-maturity').textContent = item.maturity;
+
+      document.getElementById('dm-play-btn').onclick = () => {
+        closeDetailModal();
+        openTheaterPlayer(item);
+      };
+
+      syncDetailMyListButton(item.id);
+
+      // Episodes Selector (Only for TV Series)
+      const epSection = document.getElementById('dm-episodes-section');
+      if (item.type === 'tv' && item.episodes) {
+        epSection.classList.remove('hidden');
+        renderEpisodesList(1);
+      } else {
+        epSection.classList.add('hidden');
+      }
+
+      // More Like This Cards
+      const similar = CATALOG.filter(i => i.id !== item.id).slice(0, 6);
+      document.getElementById('dm-similar-grid').innerHTML = similar.map(sim => `
+        <div onclick="openDetailById(${sim.id})" class="bg-[#2f2f2f] rounded-[4px] overflow-hidden cursor-pointer hover:bg-[#383838] transition">
+          <div class="relative aspect-video bg-cover bg-center" style="background-image: url('${sim.backdrop}')">
+            <span class="absolute top-2 right-2 text-xs font-semibold text-white bg-black/70 px-1.5 py-0.5 rounded">${sim.duration}</span>
+          </div>
+          <div class="p-3.5 space-y-2">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2 text-xs">
+                <span class="px-1 border border-gray-400 text-gray-200">${sim.maturity}</span>
+                <span class="text-gray-300">${sim.year}</span>
+              </div>
+              <button onclick="event.stopPropagation(); toggleMyList(${sim.id})" class="w-8 h-8 rounded-full border border-gray-400 hover:border-white flex items-center justify-center text-white">
+                <i data-lucide="${appState.myList.includes(sim.id) ? 'check' : 'plus'}" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <h4 class="font-bold text-sm text-white truncate">${sim.title}</h4>
+            <p class="text-xs text-gray-300 line-clamp-3 leading-relaxed">${sim.synopsis}</p>
+          </div>
+        </div>
+      `).join('');
+
+      const modal = document.getElementById('detail-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function renderEpisodesList(seasonNum) {
+      const item = appState.modalItem;
+      if (!item || !item.episodes) return;
+      const listEl = document.getElementById('dm-episodes-list');
+      listEl.innerHTML = item.episodes.map(ep => `
+        <div onclick="closeDetailModal(); openTheaterPlayer(appState.modalItem, 'S${seasonNum}:E${ep.num} &quot;${ep.title}&quot;')" class="py-4 px-3 hover:bg-[#333333] rounded flex flex-col sm:flex-row sm:items-center gap-4 cursor-pointer transition group">
+          <span class="hidden sm:block text-xl font-semibold text-gray-400 w-6 text-center">${ep.num}</span>
+          <div class="relative w-full sm:w-36 aspect-video rounded overflow-hidden bg-zinc-800 shrink-0">
+            <img src="${ep.img}" alt="${ep.title}" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+              <div class="w-10 h-10 rounded-full border border-white bg-black/60 flex items-center justify-center">
+                <i data-lucide="play" class="w-4 h-4 fill-white text-white ml-0.5"></i>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <h4 class="font-bold text-sm sm:text-base text-white">${ep.title}</h4>
+              <span class="text-xs sm:text-sm text-gray-300 shrink-0">${ep.dur}</span>
+            </div>
+            <p class="text-xs sm:text-sm text-[#d2d2d2] leading-snug">${ep.desc}</p>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function syncDetailMyListButton(itemId) {
+      const btn = document.getElementById('dm-mylist-btn');
+      const inList = appState.myList.includes(itemId);
+      btn.innerHTML = `<i data-lucide="${inList ? 'check' : 'plus'}" class="w-5 h-5"></i>`;
+      btn.onclick = () => toggleMyList(itemId);
+      lucide.createIcons();
+    }
+
+    function toggleDetailLike(btn) {
+      btn.classList.toggle('bg-[#E50914]');
+      btn.classList.toggle('border-[#E50914]');
+      showToast('Thanks for rating! Recommendations updated.');
+    }
+
+    function closeDetailModal() {
+      const modal = document.getElementById('detail-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function onDetailBackdropClick(e) {
+      if (e.target.id === 'detail-modal') closeDetailModal();
+    }
+
+    // =========================================================================
+    // 12. FULL-SCREEN NETFLIX THEATER VIDEO PLAYER
+    // =========================================================================
+    function openTheaterPlayer(item, customEpLabel = null) {
+      appState.player.item = item;
+      appState.player.playing = true;
+      appState.player.percent = 12;
+
+      document.getElementById('tp-visual').style.backgroundImage = `url('${item.backdrop}')`;
+      document.getElementById('tp-title-label').textContent = item.title;
+      document.getElementById('tp-ep-label').textContent = customEpLabel || item.episodeInfo || `${item.year} • ${item.duration}`;
+      document.getElementById('tp-subtitle-text').textContent = item.subtitles[0];
+
+      const playerEl = document.getElementById('theater-player');
+      playerEl.classList.remove('hidden');
+      playerEl.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+
+      syncTheaterPlayButton();
+      startTheaterLoop();
+    }
+
+    function closeTheaterPlayer() {
+      clearInterval(appState.player.interval);
+      appState.player.playing = false;
+      const playerEl = document.getElementById('theater-player');
+      playerEl.classList.add('hidden');
+      playerEl.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function startTheaterLoop() {
+      clearInterval(appState.player.interval);
+      appState.player.interval = setInterval(() => {
+        if (!appState.player.playing) return;
+
+        appState.player.percent += 0.25 * appState.player.speed;
+        if (appState.player.percent >= 100) appState.player.percent = 0;
+
+        // Rotate realistic dialogue subtitles
+        const subs = appState.player.item?.subtitles || [];
+        if (subs.length > 0) {
+          const idx = Math.floor((appState.player.percent / 100) * subs.length) % subs.length;
+          document.getElementById('tp-subtitle-text').textContent = subs[idx];
+        }
+
+        syncTheaterTimeline();
+      }, 450);
+    }
+
+    function toggleTheaterPlay() {
+      appState.player.playing = !appState.player.playing;
+      syncTheaterPlayButton();
+
+      const feedback = document.getElementById('tp-center-feedback');
+      feedback.innerHTML = `<i data-lucide="${appState.player.playing ? 'play' : 'pause'}" class="w-10 h-10 sm:w-12 sm:h-12 fill-white"></i>`;
+      feedback.classList.remove('hidden');
+      lucide.createIcons();
+      setTimeout(() => feedback.classList.add('hidden'), 420);
+    }
+
+    function syncTheaterPlayButton() {
+      const btn = document.getElementById('tp-play-btn');
+      btn.innerHTML = `<i data-lucide="${appState.player.playing ? 'pause' : 'play'}" class="w-7 h-7 sm:w-8 sm:h-8 fill-white"></i>`;
+      syncTheaterTimeline();
+      lucide.createIcons();
+    }
+
+    function syncTheaterTimeline() {
+      document.getElementById('tp-progress-bar').style.width = `${appState.player.percent}%`;
+      const remSec = Math.max(0, Math.floor(((100 - appState.player.percent) / 100) * appState.player.totalSeconds));
+      const m = Math.floor(remSec / 60).toString().padStart(2, '0');
+      const s = (remSec % 60).toString().padStart(2, '0');
+      document.getElementById('tp-remaining-time').textContent = `${m}:${s}`;
+    }
+
+    function seekTheaterTimeline(e) {
+      e.stopPropagation();
+      const track = document.getElementById('tp-scrubber-track');
+      const rect = track.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      appState.player.percent = ratio * 100;
+      syncTheaterTimeline();
+    }
+
+    function previewScrubberTime(e) {
+      const track = document.getElementById('tp-scrubber-track');
+      const tooltip = document.getElementById('tp-hover-tooltip');
+      const rect = track.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const sec = Math.floor(ratio * appState.player.totalSeconds);
+      const m = Math.floor(sec / 60).toString().padStart(2, '0');
+      const s = (sec % 60).toString().padStart(2, '0');
+      tooltip.textContent = `${m}:${s}`;
+      tooltip.style.left = `${ratio * 100}%`;
+      tooltip.classList.remove('hidden');
+    }
+
+    function hideScrubberTooltip() {
+      document.getElementById('tp-hover-tooltip').classList.add('hidden');
+    }
+
+    function skipTheater(deltaSec) {
+      const deltaPct = (deltaSec / appState.player.totalSeconds) * 100;
+      appState.player.percent = Math.max(0, Math.min(100, appState.player.percent + deltaPct));
+      syncTheaterTimeline();
+    }
+
+    function toggleTheaterMute() {
+      appState.player.muted = !appState.player.muted;
+      const btn = document.getElementById('tp-mute-btn');
+      const slider = document.getElementById('tp-vol-slider');
+      btn.innerHTML = `<i data-lucide="${appState.player.muted ? 'volume-x' : 'volume-2'}" class="w-6 h-6 sm:w-7 sm:h-7"></i>`;
+      slider.value = appState.player.muted ? 0 : appState.player.volume;
+      lucide.createIcons();
+    }
+
+    function updateTheaterVolume(val) {
+      appState.player.volume = Number(val);
+      appState.player.muted = appState.player.volume === 0;
+      const btn = document.getElementById('tp-mute-btn');
+      btn.innerHTML = `<i data-lucide="${appState.player.muted ? 'volume-x' : 'volume-2'}" class="w-6 h-6 sm:w-7 sm:h-7"></i>`;
+      lucide.createIcons();
+    }
+
+    function playNextEpisode() {
+      appState.player.percent = 0;
+      syncTheaterTimeline();
+      document.getElementById('tp-ep-label').textContent = 'S1:E2 "Next Chapter"';
+      showToast('Playing Next Episode');
+    }
+
+    function toggleAudioSubMenu() {
+      document.getElementById('tp-speed-popover').classList.add('hidden');
+      document.getElementById('tp-audio-sub-popover').classList.toggle('hidden');
+    }
+
+    function selectAudioTrack(lang) {
+      document.getElementById('tp-audio-sub-popover').classList.add('hidden');
+      showToast(`Audio switched to ${lang}`);
+    }
+
+    function selectSubtitleTrack(lang) {
+      appState.player.subtitleLang = lang;
+      const box = document.getElementById('tp-subtitle-box');
+      if (lang === 'Off') {
+        box.classList.add('hidden');
+      } else {
+        box.classList.remove('hidden');
+      }
+      document.getElementById('tp-audio-sub-popover').classList.add('hidden');
+      showToast(`Subtitles: ${lang}`);
+    }
+
+    function toggleSpeedMenu() {
+      document.getElementById('tp-audio-sub-popover').classList.add('hidden');
+      document.getElementById('tp-speed-popover').classList.toggle('hidden');
+    }
+
+    function setPlaybackSpeed(spd) {
+      appState.player.speed = spd;
+      document.getElementById('tp-speed-btn').textContent = `${spd}x`;
+      document.getElementById('tp-speed-popover').classList.add('hidden');
+      showToast(`Playback speed set to ${spd}x`);
+    }
+
+    function toggleTheaterFullscreen() {
+      const el = document.getElementById('theater-player');
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch(() => showToast('Fullscreen mode toggled'));
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // =========================================================================
+    // 13. HEADER POPOVERS & TOAST FEEDBACK
+    // =========================================================================
+    function toggleNotifPopover() {
+      document.getElementById('account-dropdown').classList.add('hidden');
+      document.getElementById('notif-popover').classList.toggle('hidden');
+    }
+
+    function toggleAccountMenu() {
+      document.getElementById('notif-popover').classList.add('hidden');
+      document.getElementById('account-dropdown').classList.toggle('hidden');
+      document.getElementById('header-caret').classList.toggle('rotate-180');
+    }
+
+    function toggleMobileBrowseMenu() {
+      document.getElementById('mobile-browse-dropdown').classList.toggle('hidden');
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const el = document.getElementById('netflix-toast');
+      document.getElementById('netflix-toast-text').textContent = msg;
+      el.classList.remove('translate-y-16', 'opacity-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.add('translate-y-16', 'opacity-0');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
